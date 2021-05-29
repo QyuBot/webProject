@@ -1,7 +1,6 @@
 <?php
 
-
-
+    // 이 파일은 ~/db/db_function.php 에서 사용합니다.
     // 이 PHP 파일을 include 하기 전에 \settings\db_info.php 를 include 해야합니다.
     if (!empty($MYSQL_DATABASE_NAME)) {
 
@@ -31,7 +30,7 @@
             CONSTRAINT  PRIMARY KEY (project_id)
         );";
 
-        $SQL_ALTER_DATABASE_TABLE_PROJECTS_FK_USERS = "ALTER TABLE projects
+        $SQL_ALTER_TABLE_PROJECTS_FK_USERS = "ALTER TABLE projects
         ADD CONSTRAINT FK_projects_project_admin_id_users_user_id FOREIGN KEY (project_admin_id)
             REFERENCES users (user_id) ON DELETE RESTRICT ON UPDATE RESTRICT;";
 

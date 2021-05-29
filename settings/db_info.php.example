@@ -1,0 +1,13 @@
+<?php
+
+    // DB 설정을 저장하는 파일 입니다.
+    // 파일명 끝에 .example 을 지우고, 아래 설정값들을 입력해주세요
+    // !! 절대 !! 설정값을 작성한 db_info.php 파일이 git 등에 업로드되지 않도록 하세요(.gitignore 세팅).
+
+    $MYSQL_ADDRESS = "127.0.0.1";
+    
+    $MYSQL_USER_NAME = "";
+    $MYSQL_USER_PASSWORD = "";
+    $MYSQL_DATABASE_NAME = "";
+    
+?>
