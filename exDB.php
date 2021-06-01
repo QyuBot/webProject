@@ -24,20 +24,23 @@
 
 </head>
 
-<body scroll=no onload="init();">
+<body>
     <?php echo"<h1>데이터베이스 테스트 페이지 입니다.</h1>";?>
     <hr>
     <h3>데이터베이스 상태</h3>
     <?php
         if(checkDB()){
-            echo "DB가 생성되어 있습니다.";
+            echo "DB가 생성되어 있습니다.<br>";
             echo "유저 테이블 : ".isExist(checkTable("users"))."<br>";
             echo "프로젝트 테이블 : ".isExist(checkTable("projects"))."<br>";
             echo "마일스톤 테이블 : ".isExist(checkTable("milestones"))."<br>";
             echo "이슈 테이블 : ".isExist(checkTable("issues"))."<br>";
+            echo "이미지 테이블 : ".isExist(checkTable("images"))."<br>";
             echo "보고서 테이블 : ".isExist(checkTable("reports"))."<br>";
             echo "댓글 테이블 : ".isExist(checkTable("comments"))."<br>";
             echo "유저 프로젝트 참여 관계 테이블 : ".isExist(checkTable("user_project_join"))."<br>";
+            echo "이미지 이슈 포함 관계 테이블 : ".isExist(checkTable("image_issue_include"))."<br>";
+            echo "이미지 이슈 포함 관계 테이블 : ".isExist(checkTable("image_report_include"))."<br>";
         }
         else{
             echo "DB가 생성되지 않았습니다!";
