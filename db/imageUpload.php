@@ -12,8 +12,16 @@
     $fname = $file['name'];
     $fsize = $file['size'];
     $timestamp = date('Y-m-d H:i:s');
-    // $slashes = addslashes(fread(fopen($file['tmp_name'], "r"), $fsize));
-    $slashes = fopen($file['tmp_name'], 'rb');
+
+    if (get_magic_quotes_gpc()) {
+        $slashes = fread(fopen($file['tmp_name'], "rb"), $fsize);
+    }
+    else {
+        $slashes = addslashes(fread(fopen($file['tmp_name'], "rb"), $fsize));
+    }
+
+    // $slashes = fopen($file['tmp_name'], 'rb');
+    $tempuser = 1;
 
     // 파일 크기(20MB 제한)
     if ($file['size']>20480000) {
@@ -32,33 +40,18 @@
 
     $conn = getDatabaseConnect();
     if ($conn != null) {
-//         $sql = "INSERT INTO images (original_filename, upload_time, upload_user_id, image_blob) VALUES ('{$fname}', '{$timestamp}', 1, {$slashes});";
-//         echo $sql."<br>";
 
-        $stmt = $mysqli->stmt_init();
-        $sql = "INSERT INTO images (original_filename, upload_time, upload_user_id, image_blob)
-            VALUES (?, ?, ?, ?));";
-
-        $stmt->bindParam(1, $fname);
-        $stmt->bindParam(2, $timestamp);
-        $stmt->bindParam(3, 1);
-        $stmt->bindParam(4, $slashes, POD::PARAM_LOB);
-
-        $stmt->execute();
-
-//        $run = mysqli_query($conn, $sql);
-//        if ($run) {
-//            echo "0";
-//            return 0;
-//        }
-//        else {
-//            echo "<br>MYSQL Error Occur<br>";
-//            echo mysqli_error($conn);
-//            return "-1";
-//        }
+        $sql = "INSERT INTO images VALUES ('', '{$fname}', '{$timestamp}', '$tempuser', '{$slashes}');";
+        echo $sql."<br>";
+        $run = mysqli_query($conn, $sql);
+        if ($run) {
+            echo "0";
+        }
+        else {
+            echo "<br>MYSQL Error<br>";
+            echo mysqli_error($conn);
+            echo "-1";
+        }
 
     }
-
-    echo "-1";
-    return -1;
 ?>

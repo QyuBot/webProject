@@ -77,6 +77,15 @@
         return false;
     }
 
+    function getPDO() {
+        global $MYSQL_ADDRESS, $MYSQL_DATABASE_NAME, $MYSQL_USER_NAME, $MYSQL_USER_PASSWORD;
+        $port = "3306";
+
+        $dsn = "mysql:host=".$MYSQL_ADDRESS.";port=".$port.";dbname=".$MYSQL_DATABASE_NAME.";charset=utf8";
+        return new PDO($dsn, $MYSQL_USER_NAME, $MYSQL_USER_PASSWORD);
+    }
+
+
     // DB 초기화 SQL을 실행하는 함수
     function InitDatabase(){
         require $_SERVER["DOCUMENT_ROOT"]."/db/db_initSQL.php";
