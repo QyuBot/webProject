@@ -21,6 +21,8 @@
 <a href="/exImageDB.php">홈으로</a> <a href="/exImageDB.php?&page=upload">업로드</a><br>
 <?php
     require_once $_SERVER["DOCUMENT_ROOT"]."/db/db_function.php";
+    require_once $_SERVER["DOCUMENT_ROOT"]."/settings/settings.php";
+
     // page GET 키가 없을 경우 -> 홈 화면
     if(!isset($_GET["page"])) {
         echo "게시글을 선택해주세요.";
@@ -42,14 +44,18 @@
         }
         // page GET 키가 upload 가 아닐 경우 -> 사진 조회 화면
         else {
+            require_once $_SERVER["DOCUMENT_ROOT"]."/db/getImageSrc.php";
+            global $DIR_IMAGES;
+            $fName = getImageSrc($page);
             echo "<h3>사진 조회 : 인덱스[{$page}]</h3>";
-            echo "<div id='image-container'><img id='preview-image' src='/db/viewImage.php?id={$page}'></div>";
+            echo "<div id='image-container'><img id='preview-image' src='{$DIR_IMAGES}/{$fName}'></div>";
             echo "<br>";
 
             drawList();
         }
     }
 
+    // 이미지 목록 표 그리는 함수
     function drawList() {
 
         echo "<h3>업로드 이미지 목록</h3><hr><div class='list'>";
@@ -75,7 +81,7 @@
                     echo "
                         <tr>
                             <td>" . $row['image_id'] . "</td>
-                            <td>" . $row['original_filename'] . "</td>
+                            <td>" . $row['image_original_filename'] . "</td>
                             <td>" . $row['upload_time'] . "</td>
                             <td>" . $row['upload_user_id'] . "</td>
                             <td><a href='/exImageDB.php?&page={$row["image_id"]}'>사진보기</a></td></tr>";
@@ -94,6 +100,7 @@
 
 <script type="text/javascript">
 
+    // 이미지 업로드 시 미리보기
     function readImage(input) {
         // 인풋 태그에 파일이 있는 경우
         if(input.files && input.files[0]) {

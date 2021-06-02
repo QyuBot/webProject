@@ -1,6 +1,6 @@
 <?php
 
-    require $_SERVER["DOCUMENT_ROOT"]."/settings/db_info.php";
+    require $_SERVER["DOCUMENT_ROOT"]."/settings/settings.php";
 
     function getMySQLConnect(){
         global $MYSQL_ADDRESS, $MYSQL_USER_NAME, $MYSQL_USER_PASSWORD;
