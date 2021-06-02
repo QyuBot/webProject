@@ -75,11 +75,13 @@
     // 이미지 테이블 생성 SQL
     $SQL_CREATE_TABLE_IMAGES = "CREATE TABLE images
         (
-            `image_id`           BIGINT          NOT NULL    AUTO_INCREMENT COMMENT '이미지 ID', 
-            `original_filename`  VARCHAR(256)    NOT NULL    COMMENT '원본 파일명', 
-            `upload_time`        TIMESTAMP       NOT NULL    COMMENT '업로드 시간', 
-            `upload_user_id`     BIGINT          NOT NULL    COMMENT '업로드 유저 ID', 
-            `image_blob`         LONGBLOB        NOT NULL    COMMENT '이미지 블롭', 
+            `image_id`                 BIGINT          NOT NULL    AUTO_INCREMENT COMMENT '이미지 ID', 
+            `image_original_filename`  VARCHAR(256)    NOT NULL    COMMENT '이미지 원본 파일명', 
+            `image_save_filename`      VARCHAR(256)    NOT NULL    COMMENT '이미지 저장 파일명', 
+            `image_type`               VARCHAR(45)     NOT NULL    COMMENT '이미지 타입', 
+            `image_size`               INT             NOT NULL    COMMENT '이미지 크기', 
+            `upload_time`              TIMESTAMP       NOT NULL    COMMENT '업로드 시간', 
+            `upload_user_id`           BIGINT          NOT NULL    COMMENT '업로드 유저 ID', 
             CONSTRAINT  PRIMARY KEY (image_id)
         );";
 

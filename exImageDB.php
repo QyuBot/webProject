@@ -9,8 +9,11 @@
     <link rel="stylesheet" href="">
     <style>
         #preview-image {
+            border: 1px solid gray;
             width: auto;
             height: 50%;
+            min-width: 50px;
+            min-height: 50px;
         }
     </style>
 </head>
@@ -18,7 +21,6 @@
 <a href="/exImageDB.php">홈으로</a> <a href="/exImageDB.php?&page=upload">업로드</a><br>
 <?php
     require_once $_SERVER["DOCUMENT_ROOT"]."/db/db_function.php";
-
     // page GET 키가 없을 경우 -> 홈 화면
     if(!isset($_GET["page"])) {
         echo "게시글을 선택해주세요.";
@@ -40,12 +42,16 @@
         }
         // page GET 키가 upload 가 아닐 경우 -> 사진 조회 화면
         else {
+            echo "<h3>사진 조회 : 인덱스[{$page}]</h3>";
+            echo "<div id='image-container'><img id='preview-image' src='/db/viewImage.php?id={$page}'></div>";
+            echo "<br>";
 
-
+            drawList();
         }
     }
 
     function drawList() {
+
         echo "<h3>업로드 이미지 목록</h3><hr><div class='list'>";
         $conn = getDatabaseConnect();
         if ($conn != null) {
@@ -105,8 +111,10 @@
     }
     // input file에 change 이벤트 부여
     const inputImage = document.getElementById("form-image");
-    inputImage.addEventListener("change", e => {
-        readImage(e.target);
-    })
+    if (inputImage != null) {
+        inputImage.addEventListener("change", e => {
+            readImage(e.target);
+        })
+    }
 
 </script>

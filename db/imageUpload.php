@@ -1,5 +1,4 @@
 <?php
-
     require_once $_SERVER["DOCUMENT_ROOT"]."/db/db_function.php";
 
     if (!isset($_FILES['form-image'])) {
