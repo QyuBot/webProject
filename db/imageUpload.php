@@ -26,7 +26,7 @@
     $tempuser = 1;
 
     // 파일 크기(20MB 제한)
-    if ($file['size']>20480000) {
+    if ($file['size'] > 20480000) {
         echo "-1";
         exit;
     }
@@ -94,7 +94,6 @@
             $saveDir = $_SERVER["DOCUMENT_ROOT"].$DIR_IMAGES;
 
             // 저장 폴더가 없을 경우 생성
-            echo $saveDir;
             if(!is_dir($storageDir))
                 mkdir($storageDir);
             if (!is_dir($saveDir))

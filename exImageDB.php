@@ -74,7 +74,7 @@
                             <th>원본 파일명</th>
                             <th>업로드 시간</th>
                             <th>업로드 유저 ID</th>
-                            <th>게시글 링크</th>
+                            <th>사진 링크</th>
                         </thead>
                         <tbody>";
                 while ($row = mysqli_fetch_assoc($result)) {
