@@ -81,8 +81,11 @@
         global $MYSQL_ADDRESS, $MYSQL_DATABASE_NAME, $MYSQL_USER_NAME, $MYSQL_USER_PASSWORD;
         $port = "3306";
 
-        $dsn = "mysql:host=".$MYSQL_ADDRESS.";port=".$port.";dbname=".$MYSQL_DATABASE_NAME.";charset=utf8";
-        return new PDO($dsn, $MYSQL_USER_NAME, $MYSQL_USER_PASSWORD);
+        $dbConnectionInfo = "mysql:host=".$MYSQL_ADDRESS.";port=".$port.";dbname=".$MYSQL_DATABASE_NAME.";charset=utf8";
+        $dbConnection = new PDO($dbConnectionInfo, $MYSQL_USER_NAME, $MYSQL_USER_PASSWORD);
+        $dbConnection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $dbConnection;
     }
 
 
@@ -151,7 +154,3 @@
         }
         return "-1";
     }
-
-
-?>
-
