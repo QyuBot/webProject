@@ -51,19 +51,28 @@ if ($saveFileName == false) {
     exit;
 }
 
-$conn = getDatabaseConnect();
-if ($conn != null) {
+$pdo = getPDO();
+$sql = "INSERT INTO images VALUES ('', :fname, :savefname, :ftype, :fsize, :upload_timestamp, '1');";
+$stmt = $pdo->prepare($sql);
 
-    $sql = "INSERT INTO images VALUES ('', '{$fname}', '{$saveFileName}', '{$ftype}', '{$fsize}', '{$timestamp}', '1');";
-    $run = mysqli_query($conn, $sql);
-    if ($run) {
-        echo $DIR_IMAGES."/".$saveFileName;
-    }
-    else {
-        echo "-4";
-        exit;
-    }
+try {
 
+    $pdo->beginTransaction();
+
+    $stmt->bindParam(':fname', $fname, PDO::PARAM_STR);
+    $stmt->bindParam(':savefname', $saveFileName, PDO::PARAM_STR);
+    $stmt->bindParam(':ftype', $ftype, PDO::PARAM_STR);
+    $stmt->bindParam(':fsize', $fsize, PDO::PARAM_STR);
+    $stmt->bindParam(':upload_timestamp', $timestamp, PDO::PARAM_STR);
+
+    $stmt->execute();
+    $pdo->commit();
+    echo $DIR_IMAGES."/".$saveFileName;
+    exit;
+
+} catch (PDOException $e) {
+    $pdo->rollback();
+    echo "-4";
 }
 
 // 매개변수의 이미지 파일 객체를 랜덤 파일명으로 저장하는 함수

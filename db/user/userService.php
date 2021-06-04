@@ -15,49 +15,55 @@ function isTooShort($loginId) {
 // LoginId가 이미 존재하는지 확인하는 함수
 function isLoginIdExist($loginId) {
 
-    $conn = getDatabaseConnect();
-    if ($conn != null){
-        $sql = "SELECT * FROM users WHERE user_login_id ='{$loginId}';";
-        $result = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($result) == 0)
-            return false;
-        else
-            return true;
-    }
+    $pdo = getPDO();
+    $sql = "SELECT * FROM users WHERE user_login_id = :loginId;";
+    $stmt = $pdo->prepare($sql);
 
-    return -1;
+    $stmt->bindParam(':loginId', $loginId, PDO::PARAM_STR);
+
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_NUM);
+    if (count($result) == 0)
+        return false;
+    else
+        return true;
 }
 
 // 닉네임이 이미 존재하는지 확인하는 함수
 function isNicknameExist($nickname) {
 
-    $conn = getDatabaseConnect();
-    if ($conn != null){
-        $sql = "SELECT * FROM users WHERE user_nickname='{$nickname}';";
-        $result = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($result) == 0)
-            return false;
-        else
-            return true;
-    }
+    $pdo = getPDO();
+    $sql = "SELECT * FROM users WHERE user_nickname = :nickname;";
+    $stmt = $pdo->prepare($sql);
 
-    return -1;
+    $stmt->bindParam(':nickname', $nickname, PDO::PARAM_STR);
+
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_NUM);
+    if (count($result) == 0)
+        return false;
+    else
+        return true;
 }
 
 // 이메일이 이미 존재하는지 확인하는 함수
 function isEmailExist($email, $eDomain) {
 
-    $conn = getDatabaseConnect();
-    if ($conn != null){
-        $sql = "SELECT * FROM users WHERE user_email ='{$email}' AND user_email_domain = '{$eDomain}';";
-        $result = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($result) == 0)
-            return false;
-        else
-            return true;
-    }
+    $pdo = getPDO();
+    $sql = "SELECT * FROM users WHERE user_email = :email AND user_email_domain = :domain;";
+    $stmt = $pdo->prepare($sql);
 
-    return -1;
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->bindParam(':domain', $eDomain, PDO::PARAM_STR);
+
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_NUM);
+
+    if (count($result) == 0)
+        return false;
+    else
+        return true;
+
 }
 
 // 유저 정보를 추가하는 함수
@@ -78,10 +84,15 @@ function addUser($id, $pw, $nickname, $email, $eDomain) {
         // 복구 지점 설정
         $pdo->beginTransaction();
 
+        // 파라메터 바인딩
+        $stmt->bindValue(':id', $id, PDO::PARAM_STR);
+        $stmt->bindValue(':pw', $id, PDO::PARAM_STR);
+        $stmt->bindValue(':nickname', $id, PDO::PARAM_STR);
+        $stmt->bindValue(':email', $id, PDO::PARAM_STR);
+        $stmt->bindValue(':eDomain', $id, PDO::PARAM_STR);
+
         // 데이터 삽입
-        $stmt->execute(array(
-            $id, $pw, $nickname, $email, $eDomain
-        ));
+        $stmt->execute();
 
         // 성공 시 변경점 저장 후 true 리턴
         $pdo->commit();

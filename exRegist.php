@@ -159,7 +159,6 @@
                     email_domain: input_email_domain.value,
                 },
                 success: (code) => {
-                    console.log(code);
                     switch(code) {
                         case "no_email":
                             result_span.innerText = "이메일을 입력해주세요"

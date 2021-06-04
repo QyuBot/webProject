@@ -47,7 +47,7 @@
         <div class="col-12 col-md-12 item">
         <form action="/board/savePost.php" method="post">
             <input type="hidden" name="imgUrl" id="imgUrl" value="">
-            <input type="hidden" name="attachFile" id="attachFile" value="">
+            <!--<input type="hidden" name="attachFile" id="attachFile" value="">-->
             <div class="form-group">
                 <input type="text" class="form-control" id="title" name="title" placeholder="제목">
             </div>
@@ -69,13 +69,17 @@ EOT;
     // page GET 키가 upload 가 아닐 경우 -> 게시글 조회 화면
     else {
 
-        $conn = getDatabaseConnect();
-        $sql = "SELECT * FROM reports WHERE report_id = {$_GET["page"]};";
-        $result = mysqli_query($conn, $sql);
-        $row = mysqli_fetch_assoc($result);
-        echo "<h3>글 조회 : 인덱스[{$page}]</h3><h3>글 제목 : {$row['report_title']}</h3>";
-        echo "<div class='contents'>{$row['report_article']}</div>";
-        echo "<br><h3>작성일자</h3>{$row['report_create_time']}<hr>";
+        $pdo = getPDO();
+        $sql = "SELECT * FROM reports WHERE report_id = :id;";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':id', $_GET["page"], PDO::PARAM_INT);
+
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        echo "<h3>글 조회 : 인덱스[{$page}]</h3><h3>글 제목 : {$result[0]['report_title']}</h3>";
+        echo "<div class='contents'>{$result[0]['report_article']}</div>";
+        echo "<br><h3>작성일자</h3>{$result[0]['report_create_time']}<hr>";
         drawList();
     }
 
@@ -84,40 +88,40 @@ EOT;
 
     function drawList() {
         echo "<h3>업로드 이미지 목록</h3><hr><div class='list'>";
-        $conn = getDatabaseConnect();
-        if ($conn != null) {
-            $sql = "SELECT * FROM reports";
-            $result = mysqli_query($conn, $sql);
+        $pdo = getPDO();
+        $sql = "SELECT * FROM reports";
+        $stmt = $pdo->prepare($sql);
 
-            if (mysqli_num_rows($result) == 0)
-                echo "업로드된 이미지가 없습니다.";
-            else {
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        if (count($result) == 0)
+            echo "업로드된 이미지가 없습니다.";
+        else {
+            echo "
+                <table border='1'>
+                    <thead>
+                        <th>ID</th>
+                        <th>프로젝트 ID</th>
+                        <th>제목</th>
+                        <th>작성자 ID</th>
+                        <th>시간</th>
+                        <th>게시글 링크</th>
+                    </thead>
+                    <tbody>";
+            for($i = 0; $i < count($result); $i++) {
+                $row = $result[$i];
                 echo "
-                    <table border='1'>
-                        <thead>
-                            <th>ID</th>
-                            <th>프로젝트 ID</th>
-                            <th>제목</th>
-                            <th>작성자 ID</th>
-                            <th>시간</th>
-                            <th>게시글 링크</th>
-                        </thead>
-                        <tbody>";
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "
-                        <tr>
-                            <td>" . $row['report_id'] . "</td>
-                            <td>" . $row['report_inclusion_project_id'] . "</td>
-                            <td>" . $row['report_title'] . "</td>
-                            <td>" . $row['report_creator_id'] . "</td>
-                            <td>" . $row['report_create_time'] . "</td>
-                            <td><a href='/exEditor.php?&page={$row["report_id"]}'>글 보기</a></td></tr>";
-                }
+                    <tr>
+                        <td>" . $row['report_id'] . "</td>
+                        <td>" . $row['report_inclusion_project_id'] . "</td>
+                        <td>" . $row['report_title'] . "</td>
+                        <td>" . $row['report_creator_id'] . "</td>
+                        <td>" . $row['report_create_time'] . "</td>
+                        <td><a href='/exEditor.php?&page={$row[0]}'>글 보기</a></td></tr>";
             }
-
-            echo "</tbody></thead></table></div>";
         }
-
+        echo "</tbody></thead></table></div>";
     }
 
     ?>

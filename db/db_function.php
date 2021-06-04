@@ -62,7 +62,7 @@
     }
 
     // 테이블이 있는지 없는지 확인하는 함수
-    function checkTable($tableName){
+    function isTableExist($tableName){
         $conn = getDatabaseConnect();
 
         if ($conn != null) {

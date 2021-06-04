@@ -59,37 +59,39 @@
     function drawList() {
 
         echo "<h3>업로드 이미지 목록</h3><hr><div class='list'>";
-        $conn = getDatabaseConnect();
-        if ($conn != null) {
-            $sql = "SELECT * FROM images";
-            $result = mysqli_query($conn, $sql);
+        $pdo = getPDO();
+        $sql = "SELECT * FROM images";
+        $stmt = $pdo->prepare($sql);
 
-            if (mysqli_num_rows($result) == 0)
-                echo "업로드된 이미지가 없습니다.";
-            else {
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        if (count($result) == 0)
+            echo "업로드된 이미지가 없습니다.";
+        else {
+            echo "
+                <table border='1'>
+                    <thead>
+                        <th>ID</th>
+                        <th>원본 파일명</th>
+                        <th>업로드 시간</th>
+                        <th>업로드 유저 ID</th>
+                        <th>사진 링크</th>
+                    </thead>
+                    <tbody>";
+            for ($i = 0; $i < count($result); $i++) {
+                $row = $result[$i];
                 echo "
-                    <table border='1'>
-                        <thead>
-                            <th>ID</th>
-                            <th>원본 파일명</th>
-                            <th>업로드 시간</th>
-                            <th>업로드 유저 ID</th>
-                            <th>사진 링크</th>
-                        </thead>
-                        <tbody>";
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "
-                        <tr>
-                            <td>" . $row['image_id'] . "</td>
-                            <td>" . $row['image_original_filename'] . "</td>
-                            <td>" . $row['upload_time'] . "</td>
-                            <td>" . $row['upload_user_id'] . "</td>
-                            <td><a href='/exImageDB.php?&page={$row["image_id"]}'>사진보기</a></td></tr>";
-                }
+                    <tr>
+                        <td>" . $row['image_id'] . "</td>
+                        <td>" . $row['image_original_filename'] . "</td>
+                        <td>" . $row['upload_time'] . "</td>
+                        <td>" . $row['upload_user_id'] . "</td>
+                        <td><a href='/exImageDB.php?&page={$row["image_id"]}'>사진보기</a></td></tr>";
             }
-
-            echo "</tbody></thead></table></div>";
         }
+
+        echo "</tbody></thead></table></div>";
     }
 ?>
 

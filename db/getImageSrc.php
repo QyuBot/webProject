@@ -4,12 +4,20 @@
 
     function getImageSrc($id) {
 
-        $conn = getDatabaseConnect();
-        $sql = "SELECT * FROM images WHERE image_id = {$id};";
-        $result = mysqli_query($conn, $sql);
-        $row = mysqli_fetch_assoc($result);
+        $pdo = getPDO();
+        $sql = "SELECT * FROM images WHERE image_id = :id;";
+        $stmt = $pdo->prepare($sql);
 
-        return $row['image_save_filename'];
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_NUM);
+
+        if (count($result) == 1) {
+            return $result[0][2];
+        }
+
+        return "";
     }
 
 ?>
