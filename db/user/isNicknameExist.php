@@ -1,6 +1,4 @@
 <?php
-
-require_once $_SERVER["DOCUMENT_ROOT"]."/db/db_function.php";
 require_once $_SERVER["DOCUMENT_ROOT"]."/db/user/userService.php";
 
 $resultEcho = "exception";

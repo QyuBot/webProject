@@ -104,3 +104,30 @@ function addUser($id, $pw, $nickname, $email, $eDomain) {
         return false;
     }
 }
+
+
+
+function sessionToNickname(){
+    session_start();
+    if(isset($_SESSION['sess'])){
+        $index = $_SESSION['sess'];
+        if(isUserIndexExist($index) == "0"){
+            session_unset();
+            return -1;
+        }
+        $pdo = getPDO();
+        $sql = "SELECT * FROM User WHERE user_index=:user_index;";
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        if (count($result) == 1)
+            return $result[0]['user_nickname'];
+        else {
+            session_unset();
+            return -1;
+        }
+    }
+    else
+        return -1;
+}
