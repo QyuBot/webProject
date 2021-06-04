@@ -105,22 +105,46 @@ function addUser($id, $pw, $nickname, $email, $eDomain) {
     }
 }
 
+// userId(로그인 ID 아님) 가 존재하는가?
+function isUserIDExist($id) {
+
+    $pdo = getPDO();
+    $sql = "SELECT * FROM users WHERE user_id=:id;";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $result = $stmt->fetchAll();
+
+    if (count($result) == 1)
+        return true;
+    return false;
+}
+
 
 
 function sessionToNickname(){
     session_start();
-    if(isset($_SESSION['sess'])){
+    // 세션이 userId를 가지고 있는가?
+    if (isset($_SESSION['sess'])){
         $index = $_SESSION['sess'];
-        if(isUserIndexExist($index) == "0"){
+
+        // 존재하는 index 인가? 아니면 세션 파기
+        if (!isUserIDExist($index)){
             session_unset();
             return -1;
         }
+
         $pdo = getPDO();
-        $sql = "SELECT * FROM User WHERE user_index=:user_index;";
+        $sql = "SELECT * FROM users WHERE user_id=:user_index;";
         $stmt = $pdo->prepare($sql);
+
+        $stmt->bindValue(':user_index', $index, PDO::PARAM_INT);
 
         $stmt->execute();
         $result = $stmt->fetchAll();
+
         if (count($result) == 1)
             return $result[0]['user_nickname'];
         else {
@@ -131,3 +155,22 @@ function sessionToNickname(){
     else
         return -1;
 }
+
+function doLogin($loginId, $password) {
+
+    $pdo = getPDO();
+    $sql = "SELECT * FROM users WHERE user_login_id=:login_id AND user_password=:password";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindValue(':login_id', $loginId, PDO::PARAM_STR);
+    $stmt->bindValue(':password', $password, PDO::PARAM_STR);
+
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+
+    if (count($result) == 1)
+        return $result[0]['user_id'];
+    else
+        return false;
+}
+

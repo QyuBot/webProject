@@ -23,7 +23,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/db/user/userService.php";
 $loginUserNickname = sessionToNickname();
 // 로그인 되있을 경우
 if ($loginUserNickname == null || $loginUserNickname == -1){
-    echo "<p>로그인되어있지 않습니다.</p>";
+    echo "<p>로그인하지 않았습니다.</p>";
 }
 // 로그인이 안되있거나, 세션을 찾을 수 없는 경우
 else {
@@ -34,17 +34,23 @@ else {
 <br>
 <br>
 <h3>로그인 하기</h3>
-<form method="post" action="#">
+<form method="post" action="/db/user/loginUser.php">
     <table>
         <tr>
             <td>ID</td>
-            <td><input type="text" id="input_id" name="input_id"></td>
+            <td><input type="text" id="input_login_id" name="input_login_id"></td>
         </tr>
         <tr>
             <td>Password</td>
             <td><input type="password" id="input_password" name="input_password"></td>
         </tr>
     </table>
+    <br>
+    <button type="submit">로그인 하기</button>
+</form>
+<br>
+<form method="post" action="/db/user/logoutUser.php">
+    <button type="submit">로그아웃 하기</button>
 </form>
 </body>
 </html>
