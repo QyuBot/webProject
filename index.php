@@ -70,9 +70,18 @@
             echo "<script type='text/javascript'>alert('존재하지 않는 프로젝트 입니다.');</script>";
             echo "<script type='text/javascript'>window.location.href='/';</script>";
         }
-        // 존재하는 프로젝트 ID 인 경우 -> 프로젝트 대쉬보드로 이동
+        // 존재하는 프로젝트 ID 인 경우 -> 권한 채크 후 프로젝트 대쉬보드로 이동
         else {
-            require_once $_SERVER["DOCUMENT_ROOT"] . "/projectmain.php";
+            if (session_status() == PHP_SESSION_NONE)
+                session_start();
+            
+            if (isUserJoinedProject($projectId, $_SESSION['sess'])) {
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/projectmain.php";
+            }
+            else {
+                echo "<script type='text/javascript'>alert('접근 권한이 없습니다.');</script>";
+                echo "<script type='text/javascript'>window.location.href='/';</script>";
+            }
         }
     }
     ?>
