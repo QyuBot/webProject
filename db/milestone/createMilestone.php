@@ -13,7 +13,7 @@ if (session_status() == PHP_SESSION_NONE)
     session_start();
 
 // 유저가 프로젝트에 참가중이지 않은 경우
-if (isUserJoinedProject($_POST['projectId'], $_SESSION['sess'])) {
+if (!isUserJoinedProject($_POST['projectId'], $_SESSION['sess'])) {
     echo "access_denied";
     exit;
 }

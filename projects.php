@@ -100,13 +100,12 @@ EOT;
                 $.ajax(
                     {
                         type: "POST",
-                        url:"/db/project/createProject.php",
+                        url: "/db/project/createProject.php",
                         data: {
                             projectName: input,
                             adminId: '<%=(String)session.getAttribute("sess")%>',
                         },
                         success: (code) => {
-                            console.log(code);
                             switch(code) {
                                 case "no_args":
                                     alert("매개변수 오류");

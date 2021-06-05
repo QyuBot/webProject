@@ -222,7 +222,7 @@ function isUserJoinedProject($projectId, $userId) {
     $stmt->bindParam(':userId', $userId, PDO::PARAM_STR);
 
     $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_NUM);
+    $result = $stmt->fetchAll();
 
     if (count($result) == 1)
         return true;

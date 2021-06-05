@@ -1,3 +1,4 @@
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 <style>
     .milestone {
@@ -37,6 +38,7 @@ else {
         echo "마일스톤 이름 : {$milestone['milestone_name']}<br>";
         echo "포함된 이슈 갯수 : ".count($containsIssues)."<br>";
         echo "진행도 : ".getPrograssPercentage($milestone['milestone_id'])." %<br>";
+        echo "<button type='button' onclick='deleteMilestone({$milestone['milestone_id']});'>마일스톤 삭제하기</button>";
         echo "</div>";
     }
 }
@@ -50,11 +52,13 @@ else {
         if (input != null) {
             var confirmInput = confirm(input + ' 마일스톤을 생성합니까?');
             if (confirmInput) {
+
                 const projectId = document.getElementById('projectId').value;
+
                 $.ajax(
                     {
                         type: "POST",
-                        url:"/db/milestone/createMilestone.php",
+                        url: "/db/milestone/createMilestone.php",
                         data: {
                             projectId: projectId,
                             milestoneName: input,
@@ -69,10 +73,10 @@ else {
                                     alert("접근이 거부되었습니다");
                                     break;
                                 case "duplicate_name":
-                                    alert("이미 존재하는 프로젝트 ID 입니다");
+                                    alert("이미 존재하는 마일스톤 이름 입니다");
                                     break;
                                 case "success":
-                                    alert("프로젝트가 생성되었습니다");
+                                    alert("마일스톤이 생성되었습니다");
                                     location.reload();
                                     break;
                                 default:
@@ -81,6 +85,7 @@ else {
                         }
                     }
                 )
+
             }
             else {
                 alert('프로젝트가 생성되지 않았습니다.');
@@ -88,6 +93,39 @@ else {
         }
         else {
             alert('프로젝트가 생성되지 않았습니다.');
+        }
+
+    }
+
+    function deleteMilestone(milestoneId) {
+        var confirmInput = confirm('정말 마일스톤을 삭제합니까? 배정되었던 이슈들은 배정이 해제됩니다.');
+        if (confirmInput) {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/db/milestone/deleteMilestone.php",
+                    data: {
+                        milestoneId: milestoneId,
+                    },
+                    success: (code) => {
+                        console.log(code);
+                        switch(code) {
+                            case "no_args":
+                                alert("매개변수 오류");
+                                break;
+                            case "access_denied":
+                                alert("접근이 거부되었습니다");
+                                break;
+                            case "success":
+                                alert("마일스톤이 삭제되었습니다");
+                                location.reload();
+                                break;
+                            default:
+                                alert("예외 발생");
+                        }
+                    }
+                }
+            )
         }
 
     }
