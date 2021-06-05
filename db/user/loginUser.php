@@ -17,4 +17,4 @@ else {
     echo "<script type='text/javascript'>alert('로그인 성공');</script>";
 }
 
-echo "<script type='text/javascript'>window.location.href='/exLogin.php';</script>";
+echo "<script type='text/javascript'>window.location.href='/phpExample/exLogin.php';</script>";

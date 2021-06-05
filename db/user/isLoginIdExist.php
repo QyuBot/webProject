@@ -1,4 +1,6 @@
 <?php
+
+//
 require_once $_SERVER["DOCUMENT_ROOT"]."/db/user/userService.php";
 
 $resultEcho = "exception";
@@ -15,7 +17,7 @@ else {
         $resultEcho = "id_too_short";
 
     else {
-        $isExist = isLoginIdExist(isTooShort($loginId));
+        $isExist = isLoginIdExist($loginId);
 
         if ($isExist)
             $resultEcho = "exist";

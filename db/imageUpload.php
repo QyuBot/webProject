@@ -69,7 +69,7 @@ try {
     // 성공 시 변경점 저장 후 true 리턴
     $pdo->commit();
     echo "<script type='text/javascript'>alert(업로드에 성공하였습니다);</script>";
-    echo "<script type='text/javascript'>window.location.href='/exImageDB.php';</script>";
+    echo "<script type='text/javascript'>window.location.href='/phpExample/exImageDB.php';</script>";
     return true;
 
 } catch (PDOException $e) {

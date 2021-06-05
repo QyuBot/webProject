@@ -36,4 +36,4 @@ try {
     echo "<script type='text/javascript'>alert('게시글 등록을 실패하였습니다.');</script>";
 }
 
-echo "<script type='text/javascript'>window.location.href='/exEditor.php';</script>";
+echo "<script type='text/javascript'>window.location.href='/phpExample/exEditor.php';</script>";

@@ -1,3 +1,6 @@
 
 # DB 접속정보가 있는 설정파일
 /settings/db_info.php
+
+# 스토리지 폴더
+/storage/*

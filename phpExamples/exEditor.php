@@ -32,7 +32,7 @@
     <h2>게시글 등록 및 조회</h2>
     <hr>
     <?php
-    require_once $_SERVER["DOCUMENT_ROOT"]."/db/db_function.php";
+    require_once $_SERVER["DOCUMENT_ROOT"] . "/db/db_function.php";
 
     // page GET 키가 없을 경우 -> 홈 화면
     if(!isset($_GET["page"])) {

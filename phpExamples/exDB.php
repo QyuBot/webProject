@@ -13,7 +13,7 @@
 
     <?php
         /* DB 관련 함수가 정의된 php 파일 포함 */
-        require_once $_SERVER["DOCUMENT_ROOT"]."/db/db_function.php";
+        require_once $_SERVER["DOCUMENT_ROOT"] . "/db/db_function.php";
 
         // bool 참/거짓 에 따라 문자열 변환
         function isExist($bool){

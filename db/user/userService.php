@@ -1,8 +1,7 @@
 <?php
 
+// 유저와 관련된 함수들을 모와 둔 PHP 입니다.
 require_once $_SERVER["DOCUMENT_ROOT"] . "/db/db_function.php";
-
-
 
 // LoginID 의 문자열 길이를 확인하는 함수
 function isTooShort($loginId) {
