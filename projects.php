@@ -1,26 +1,15 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>화이트버킷 - 프로젝트</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="">
-    <!-- jQuery 임포트-->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <style>
-        .project {
-            border: 1px solid gray;
-            margin: 3px;
-            padding: 3px;
-            width: 200px;
-            height: 120px;
-            display: inline-block;
-        }
-    </style>
-</head>
-<body>
+
+<style>
+    .project {
+        border: 1px solid gray;
+        margin: 3px;
+        padding: 3px;
+        width: 200px;
+        height: 120px;
+        display: inline-block;
+    }
+</style>
+
 <h1>프로젝트 목록</h1>
 <?php
     require_once $_SERVER["DOCUMENT_ROOT"] . "/db/user/userService.php";
@@ -99,8 +88,7 @@ EOT;
 }
 
 ?>
-</body>
-</html>
+
 
 <script type="text/javascript">
 
