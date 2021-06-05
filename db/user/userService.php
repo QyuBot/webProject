@@ -1,7 +1,8 @@
 <?php
+require_once $_SERVER["DOCUMENT_ROOT"] . "/db/db_function.php";
+
 
 // 유저와 관련된 함수들을 모와 둔 PHP 입니다.
-require_once $_SERVER["DOCUMENT_ROOT"] . "/db/db_function.php";
 
 // LoginID 의 문자열 길이를 확인하는 함수
 function isTooShort($loginId) {
@@ -104,7 +105,7 @@ function addUser($id, $pw, $nickname, $email, $eDomain) {
     }
 }
 
-// userId(로그인 ID 아님) 가 존재하는가?
+// userId(로그인 ID 아님) 존재 여부 확인 함수
 function isUserIDExist($id) {
 
     $pdo = getPDO();
@@ -121,8 +122,7 @@ function isUserIDExist($id) {
     return false;
 }
 
-
-
+// 현재 세션을 닉네임으로 변환하여 반환하는 함수
 function sessionToNickname(){
     session_start();
     // 세션이 userId를 가지고 있는가?
@@ -155,6 +155,7 @@ function sessionToNickname(){
         return -1;
 }
 
+// ID, PW가 일치하는 유저 레코드의 ID를 반환하는 함수
 function doLogin($loginId, $password) {
 
     $pdo = getPDO();
