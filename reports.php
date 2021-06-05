@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-<?php echo("<h1>hello</h1>");?>
+보고서 목록
 </body>
 </html>
 

@@ -12,7 +12,7 @@
     </style>
 </head>
 <body>
-<?php echo("<h1>hello</h1>");?>
+마일스톤 목록
 </body>
 </html>
 

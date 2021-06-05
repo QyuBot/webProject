@@ -18,43 +18,43 @@
 
     </style>
 </head>
-<header>
-    <?php
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/db/user/userService.php";
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/db/project/projectService.php";
-
-    $loginUserNickname = sessionToNickname();
-
-    // 로그인이 되어있지 않을 경우 -> 로그인 페이지로 이동
-    if ($loginUserNickname == null || $loginUserNickname == -1)
-        echo "<script type='text/javascript'>window.location.href='/login.php';</script>";
-
-
-    ?>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">White Bucket</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <?=$loginUserNickname?> 님
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/db/user/logoutUser.php">로그아웃</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
-</header>
 <body>
+    <header>
+        <?php
+        require_once $_SERVER["DOCUMENT_ROOT"] . "/db/user/userService.php";
+        require_once $_SERVER["DOCUMENT_ROOT"] . "/db/project/projectService.php";
+
+        $loginUserNickname = sessionToNickname();
+
+        // 로그인이 되어있지 않을 경우 -> 로그인 페이지로 이동
+        if ($loginUserNickname == null || $loginUserNickname == -1)
+            echo "<script type='text/javascript'>window.location.href='/login.php';</script>";
+
+
+        ?>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">White Bucket</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <?=$loginUserNickname?> 님
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/db/user/logoutUser.php">로그아웃</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
     <?php
     // GET 으로 선택한 프로젝트가 없을 경우 -> 프로젝트 목록으로 이동
     if (!isset($_GET['projectId'])) {
@@ -72,7 +72,7 @@
         }
         // 존재하는 프로젝트 ID 인 경우 -> 프로젝트 대쉬보드로 이동
         else {
-            require_once $_SERVER["DOCUMENT_ROOT"] . "/dashboard.php";
+            require_once $_SERVER["DOCUMENT_ROOT"] . "/projectmain.php";
         }
     }
     ?>
@@ -82,6 +82,7 @@
 </html>
 
 <script type="text/javascript">
+
 
 
 </script>

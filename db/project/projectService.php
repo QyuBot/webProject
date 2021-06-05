@@ -59,7 +59,8 @@ function isProjectIdExist($projectId) {
 }
 
 // 존재하는 프로젝트 이름인지 확인하는 함수
-// 존재하면 해당 프로젝트 ID 반환(비어있지 않은 값은)
+// 존재하면 해당 프로젝트 ID 반환(비어있지 않은 값은 true로 취급)
+// 즉 프로젝트 이름으로 ID를 구하는 용도로도 사용 가능
 function isProjectNameExist($projectName) {
 
     $pdo = getPDO();
@@ -75,6 +76,24 @@ function isProjectNameExist($projectName) {
         return false;
     else
         return $result[0][0];
+}
+
+// 프로젝트 ID로 이름 구하기
+function getProjectNameByProjectId($projectId) {
+
+    $pdo = getPDO();
+    $sql = "SELECT * FROM projects WHERE project_id = :projectId;";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindParam(':projectId', $projectId, PDO::PARAM_STR);
+
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+
+    if (count($result) == 1)
+        return $result[0]['project_name'];
+    else
+        return false;
 }
 
 // 프로젝트 정보 구하기
@@ -119,6 +138,19 @@ function getProjectIssuesList($projectId) {
         }
         return $arr;
     }
+}
+
+// 프로젝트 참가 인원 구하기
+function getNumberofProjectCollaborators($projectId) {
+
+    $pdo = getPDO();
+    $sqlProjectList = "SELECT project_id FROM user_project_join WHERE project_id = :projectId;";
+    $stmt = $pdo->prepare($sqlProjectList);
+
+    $stmt->bindParam(':projectId', $projectId, PDO::PARAM_INT);
+
+    $stmt->execute();
+    return $stmt->fetchAll();
 }
 
 // 전체 프로젝트 리스트 구하기

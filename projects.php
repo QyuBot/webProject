@@ -57,8 +57,13 @@ EOT;
     }
     else {
         foreach($projectList['join'] as $row) {
+            $projectName = getProjectNameByProjectId($row);
+            $projectNumofCollaborators = count(getNumberofProjectCollaborators($row));
             echo "<div class='project'>";
-            echo "프로젝트 ID : {$row}";
+            echo "프로젝트 ID : {$row}<br>";
+            echo "프로젝트 이름 : {$projectName}<br>";
+            echo "참가자 수 : {$projectNumofCollaborators}<br>";
+            echo "<a href='/?projectId={$row}'>프로젝트 대쉬보드로 이동하기</a>";
             echo "</div>";
         }
     }
@@ -76,8 +81,13 @@ EOT;
     }
     else {
         foreach($projectList['notJoin'] as $row) {
+            $projectName = getProjectNameByProjectId($row);
+            $projectNumofCollaborators = count(getNumberofProjectCollaborators($row));
             echo "<div class='project'>";
-            echo "프로젝트 ID : {$row}";
+            echo "프로젝트 ID : {$row}<br>";
+            echo "프로젝트 이름 : {$projectName}<br>";
+            echo "참가자 수 : {$projectNumofCollaborators}<br>";
+            echo "<a href='/?projectId={$row}'>참가하기</a>";
             echo "</div>";
         }
     }
