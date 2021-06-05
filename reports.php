@@ -11,9 +11,17 @@
 
     </style>
 </head>
-<body>
-보고서 목록
-</body>
+    <body>
+    <header>
+        <?php
+        if(!defined('DirectAccessCheck')){
+            header('HTTP/1.0 404 Not Found', true, 404);
+            exit;
+        }
+        ?>
+    </header>
+    보고서 목록
+    </body>
 </html>
 
 <script type="text/javascript">

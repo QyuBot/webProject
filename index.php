@@ -21,6 +21,8 @@
 <body>
     <header>
         <?php
+        define('DirectAccessCheck', TRUE);
+
         require_once $_SERVER["DOCUMENT_ROOT"] . "/db/user/userService.php";
         require_once $_SERVER["DOCUMENT_ROOT"] . "/db/project/projectService.php";
 

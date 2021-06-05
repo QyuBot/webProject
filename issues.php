@@ -12,7 +12,16 @@
     </style>
 </head>
 <body>
-이슈 목록
+    <header>
+        <?php
+        if(!defined('DirectAccessCheck')){
+            header('HTTP/1.0 404 Not Found', true, 404);
+            exit;
+        }
+
+        ?>
+    </header>
+    이슈 목록
 </body>
 </html>
 

@@ -12,7 +12,22 @@
     </style>
 </head>
 <body>
-마일스톤 목록
+<header>
+    <?php
+    if(!defined('DirectAccessCheck')){
+        header('HTTP/1.0 404 Not Found', true, 404);
+        exit;
+    }
+    ?>
+</header>
+    <h1>마일스톤 목록</h1>
+    <br>
+    <?php
+
+    require_once $_SERVER["DOCUMENT_ROOT"] . "/db/milestone/milestoneService.php";
+
+
+    ?>
 </body>
 </html>
 

@@ -12,7 +12,15 @@
     </style>
 </head>
 <body>
-프로젝트 설정
+    <header>
+        <?php
+        if(!defined('DirectAccessCheck')){
+            header('HTTP/1.0 404 Not Found', true, 404);
+            exit;
+        }
+        ?>
+    </header>
+    프로젝트 설정
 </body>
 </html>
 
