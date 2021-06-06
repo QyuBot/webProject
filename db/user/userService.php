@@ -12,6 +12,23 @@ function isTooShort($loginId) {
     return false;
 }
 
+// 유저 ID 로 유저 객체 구하기
+function getUserByUserId($userId) {
+
+    $pdo = getPDO();
+    $sql = "SELECT * FROM users WHERE user_id = :userId;";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindParam(':userId', $userId, PDO::PARAM_STR);
+
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+    if (count($result) == 1)
+        return $result[0];
+    else
+        return array();
+}
+
 // LoginId가 이미 존재하는지 확인하는 함수
 function isLoginIdExist($loginId) {
 

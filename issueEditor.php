@@ -1,3 +1,4 @@
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
@@ -182,16 +183,15 @@ if (isset($_POST['editPostId'])) {
                             const projectId = getParameterByName('projectId');
                             window.location.href='/?projectId=' + projectId + '&page=issue';
                             break;
+                        case "access_denied":
+                            alert('접근이 거부되었습니다.');
+                            window.location.href='/?projectId=' + projectId + '&page=issue';
+                            break;
                         default:
-                            console.log(code);
-                            alert('에러.');
+                            alert('에러가 발생했습니다.');
                     }
                 }
             }
         )
     }
-
-
-    // echo "<script type='text/javascript'>window.location.href='/phpExample/exEditor.php';
-
 </script>

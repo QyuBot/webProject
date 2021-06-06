@@ -4,10 +4,6 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/db/project/projectService.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/db/milestone/milestoneService.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/db/issue/issueService.php";
 
-if (session_status() == PHP_SESSION_NONE)
-    session_start();
-
-
 // 비어있는 매개변수 없는지 확인
 if (!isset($_POST['title'])
     || !isset($_POST['contents'])
@@ -20,6 +16,9 @@ if (!isset($_POST['title'])
 }
 
 // 유저가 프로젝트에 참가중이지 않은 경우
+if (session_status() == PHP_SESSION_NONE)
+    session_start();
+
 $creatorId = $_SESSION['sess'];
 if (!isUserJoinedProject($_POST['projectId'], $creatorId)) {
     echo "access_denied";

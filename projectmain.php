@@ -45,6 +45,10 @@
                 echo "<script type='text/javascript'>activeNav(3);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/issueEditor.php";
                 break;
+            case "issueViewer":
+                echo "<script type='text/javascript'>activeNav(3);</script>";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/issueViewer.php";
+                break;
             case "report":
                 echo "<script type='text/javascript'>activeNav(4);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/reports.php";
