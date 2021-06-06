@@ -104,12 +104,15 @@ function addIssue($creatorId, $title, $contents, $priority, $status, $projectId,
 
         // 파라메터 바인딩
         $stmt->bindValue(':title', $title, PDO::PARAM_STR);
-        $stmt->bindValue(':creatorId', $projectId, PDO::PARAM_INT);
+        $stmt->bindValue(':creatorId', $creatorId, PDO::PARAM_INT);
         $stmt->bindValue(':priority', $priority, PDO::PARAM_INT);
         $stmt->bindValue(':content', $contents, PDO::PARAM_STR);
         $stmt->bindValue(':createTime', $timestamp, PDO::PARAM_STR);
         $stmt->bindValue(':status', $status, PDO::PARAM_INT);
-        $stmt->bindValue(':milestoneId', $milestoneId, PDO::PARAM_INT);
+        if ($milestoneId == -1)
+            $stmt->bindValue(':milestoneId', null);
+        else
+            $stmt->bindValue(':milestoneId', $milestoneId, PDO::PARAM_INT);
         $stmt->bindValue(':projectId', $projectId, PDO::PARAM_INT);
 
         // 데이터 삽입

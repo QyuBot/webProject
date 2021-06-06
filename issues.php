@@ -14,4 +14,8 @@ if(!defined('DirectAccessCheck')){
 }
 
 ?>
-이슈 목록
+<h1>이슈 목록</h1>
+<br>
+<a href="/?projectId=<?=$_GET['projectId']?>&page=issueEditor">이슈 새로 작성하러가기</a>
+<br>
+<br>
