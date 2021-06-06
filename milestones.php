@@ -39,12 +39,14 @@ else {
         echo "포함된 이슈 갯수 : ".count($containsIssues)."<br>";
         echo "진행도 : ".getPrograssPercentage($milestone['milestone_id'])." %<br>";
         echo "<button type='button' onclick='deleteMilestone({$milestone['milestone_id']});'>마일스톤 삭제하기</button>";
+        echo "<button type='button' onclick='renameMilestone({$milestone['milestone_id']});'>마일스톤 이름 변경하기</button>";
         echo "</div>";
     }
 }
 
 ?>
 
+<br>
 <script type="text/javascript">
 
     function createMilestone() {
@@ -64,7 +66,6 @@ else {
                             milestoneName: input,
                         },
                         success: (code) => {
-                            console.log(code);
                             switch(code) {
                                 case "no_args":
                                     alert("매개변수 오류");
@@ -97,6 +98,45 @@ else {
 
     }
 
+    function renameMilestone(milestoneId) {
+        var input = prompt('변경할 마일스톤 이름을 입력해주세요');
+        if (input != null) {
+            var confirmInput = confirm('마일스톤 이름을 ' + input + ' 으로 변경합니까??');
+            if (confirmInput) {
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "/db/milestone/renameMilestone.php",
+                        data: {
+                            milestoneId: milestoneId,
+                            newName: input,
+                        },
+                        success: (code) => {
+                            switch (code) {
+                                case "no_args":
+                                    alert("매개변수 오류");
+                                    break;
+                                case "access_denied":
+                                    alert("접근이 거부되었습니다");
+                                    break;
+                                case "duplicate_name":
+                                    alert("이미 존재하는 마일스톤 이름 입니다");
+                                    break;
+                                case "success":
+                                    alert("마일스톤 이름이 변경되었습니다");
+                                    location.reload();
+                                    break;
+                                default:
+                                    alert("예외 발생");
+                            }
+                        }
+                    }
+                )
+            }
+
+        }
+    }
+
     function deleteMilestone(milestoneId) {
         var confirmInput = confirm('정말 마일스톤을 삭제합니까? 배정되었던 이슈들은 배정이 해제됩니다.');
         if (confirmInput) {
@@ -108,7 +148,6 @@ else {
                         milestoneId: milestoneId,
                     },
                     success: (code) => {
-                        console.log(code);
                         switch(code) {
                             case "no_args":
                                 alert("매개변수 오류");
@@ -127,7 +166,6 @@ else {
                 }
             )
         }
-
     }
 
 </script>

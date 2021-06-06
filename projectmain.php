@@ -29,35 +29,34 @@
 </script>
 
 
-<div class="container-fluid">
-    <?php
-        if (isset($_GET['page'])) {
-            switch ($_GET['page']) {
-                case "milestone":
-                    echo "<script type='text/javascript'>activeNav(2);</script>";
-                    require_once $_SERVER["DOCUMENT_ROOT"] . "/milestones.php";
-                    break;
-                case "issue":
-                    echo "<script type='text/javascript'>activeNav(3);</script>";
-                    require_once $_SERVER["DOCUMENT_ROOT"] . "/issues.php";
-                    break;
-                case "report":
-                    echo "<script type='text/javascript'>activeNav(4);</script>";
-                    require_once $_SERVER["DOCUMENT_ROOT"] . "/reports.php";
-                    break;
-                case "setting":
-                    echo "<script type='text/javascript'>activeNav(5);</script>";
-                    require_once $_SERVER["DOCUMENT_ROOT"] . "/projectSettings.php";
-                    break;
-                default:
-                    echo "<script type='text/javascript'>activeNav(1);</script>";
-                    require_once $_SERVER["DOCUMENT_ROOT"] . "/dashboard.php";
-            }
-        }
-        else {
-            echo "<script type='text/javascript'>activeNav(1);</script>";
-            require_once $_SERVER["DOCUMENT_ROOT"] . "/dashboard.php";
-        }
 
-    ?>
-</div>
+<?php
+    if (isset($_GET['page'])) {
+        switch ($_GET['page']) {
+            case "milestone":
+                echo "<script type='text/javascript'>activeNav(2);</script>";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/milestones.php";
+                break;
+            case "issue":
+                echo "<script type='text/javascript'>activeNav(3);</script>";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/issues.php";
+                break;
+            case "report":
+                echo "<script type='text/javascript'>activeNav(4);</script>";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/reports.php";
+                break;
+            case "setting":
+                echo "<script type='text/javascript'>activeNav(5);</script>";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/projectSettings.php";
+                break;
+            default:
+                echo "<script type='text/javascript'>activeNav(1);</script>";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/dashboard.php";
+        }
+    }
+    else {
+        echo "<script type='text/javascript'>activeNav(1);</script>";
+        require_once $_SERVER["DOCUMENT_ROOT"] . "/dashboard.php";
+    }
+
+?>

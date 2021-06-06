@@ -78,6 +78,15 @@ function isMilestoneNameExist($projectId, $name) {
     return false;
 }
 
+// 마일스톤이 포함된 프로젝트에 이미 존재하는 마일스톤 이름인지 확인하는 함수(이름 변경 시 확인용)
+function isMilestoneNameExistinContainsProject($milestoneId, $name) {
+
+    $milestone = getMilestoneByMilestoneId($milestoneId);
+    $projectId = $milestone['milestone_inclusion_project_id'];
+
+    return isMilestoneNameExist($projectId, $name);
+}
+
 // 마일스톤 추가하기
 function addMilestone($projectId, $milestoneName) {
 
@@ -130,6 +139,35 @@ function deleteMilestone($milestoneId) {
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':milestoneId', $milestoneId, PDO::PARAM_INT);
     $stmt->execute();
+
+    return true;
+}
+
+// 마일스톤 이름 변경
+function changeMilestoneName($milestoneId, $newMilestoneName) {
+
+    $milestone = getMilestoneByMilestoneId($milestoneId);
+    if (isMilestoneNameExist($milestone['milestone_inclusion_project_id'], $newMilestoneName))
+        return false;
+
+    $pdo = getPDO();
+    $sql = "UPDATE milestones SET milestone_name = :newName WHERE milestone_id = :milestoneId;";
+    $stmt = $pdo->prepare($sql);
+
+    try {
+        $pdo->beginTransaction();
+
+        $stmt->bindValue(':milestoneId', $milestoneId, PDO::PARAM_INT);
+        $stmt->bindValue(':newName', $newMilestoneName, PDO::PARAM_STR);
+
+        $stmt->execute();
+
+        $pdo->commit();
+
+    } catch (PDOException $e) {
+        $pdo->rollback();
+        return false;
+    }
 
     return true;
 }
