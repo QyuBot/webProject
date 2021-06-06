@@ -15,7 +15,6 @@ if(!defined('DirectAccessCheck')){
     header('HTTP/1.0 404 Not Found', true, 404);
     exit;
 }
-echo "<input type='hidden' id='projectId' value='{$_GET['projectId']}'>";
 ?>
 
 <h1>마일스톤 목록</h1>
@@ -27,8 +26,7 @@ echo "<input type='hidden' id='projectId' value='{$_GET['projectId']}'>";
 <?php
 
 require_once $_SERVER["DOCUMENT_ROOT"] . "/db/milestone/milestoneService.php";
-echo "ID : {$_GET['projectId']}<br>";
-$milestones = getMilestoneList($_GET['projectId']);
+$milestones = getMilestoneListinProject($_GET['projectId']);
 if (count($milestones) == 0)
     echo "이정표(마일스톤)가 없네요. 길을 잃었어요";
 else {
@@ -55,7 +53,7 @@ else {
             var confirmInput = confirm(input + ' 마일스톤을 생성합니까?');
             if (confirmInput) {
 
-                const projectId = document.getElementById('projectId').value;
+                const projectId = getParameterByName('projectId');
 
                 $.ajax(
                     {

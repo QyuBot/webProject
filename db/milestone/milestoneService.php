@@ -2,7 +2,7 @@
 require_once $_SERVER["DOCUMENT_ROOT"] . "/db/db_function.php";
 
 // 프로젝트의 모든 마일스톤 리스트 가져오기
-function getMilestoneList($projectId) {
+function getMilestoneListinProject($projectId) {
 
     $pdo = getPDO();
     $sql = "SELECT * FROM milestones WHERE milestone_inclusion_project_id = :projectId;";
@@ -69,7 +69,7 @@ function getPrograssPercentage($milestoneId) {
 // 프로젝트에 이미 존재하는 이름의 마일스톤인지 확인하는 함수
 function isMilestoneNameExist($projectId, $name) {
 
-    $milestones = getMilestoneList($projectId);
+    $milestones = getMilestoneListinProject($projectId);
 
     foreach ($milestones as $milestone)
         if ($milestone['milestone_name'] == $name)
