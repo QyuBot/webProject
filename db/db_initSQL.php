@@ -52,7 +52,7 @@
             `issue_title`                   VARCHAR(64)    NOT NULL    COMMENT '이슈 제목', 
             `issue_creator_id`              BIGINT         NOT NULL    COMMENT '이슈 작성자 ID', 
             `issue_priority`                TINYINT        NOT NULL    COMMENT '이슈 우선순위', 
-            `issue_article`                 BLOB           NOT NULL    COMMENT '이슈 본문', 
+            `issue_article`                 LONGBLOB       NOT NULL    COMMENT '이슈 본문', 
             `issue_create_time`             TIMESTAMP      NOT NULL    COMMENT '이슈 작성 시간', 
             `issue_status`                  TINYINT        NOT NULL    COMMENT '이슈 상태', 
             `issue_inclusion_milestone_id`  BIGINT         NULL        COMMENT '이슈 포함인 마일스톤 ID', 
@@ -95,7 +95,7 @@
             `report_id`                    BIGINT         NOT NULL    AUTO_INCREMENT COMMENT '보고서 ID', 
             `report_title`                 VARCHAR(64)    NOT NULL    COMMENT '보고서 제목', 
             `report_creator_id`            BIGINT         NOT NULL    COMMENT '보고서 작성자 ID', 
-            `report_article`               BLOB           NOT NULL    COMMENT '보고서 본문', 
+            `report_article`               LONGBLOB       NOT NULL           NOT NULL    COMMENT '보고서 본문', 
             `report_create_time`           TIMESTAMP      NOT NULL    COMMENT '보고서 작성 시간', 
             `report_inclusion_project_id`  BIGINT         NOT NULL    COMMENT '보고서 포함인 프로젝트 ID', 
             CONSTRAINT  PRIMARY KEY (report_id, report_title)
