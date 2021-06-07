@@ -1,7 +1,7 @@
 <?php
 
     // 이 파일은 ~/db/db_function.php 에서 사용합니다.
-    require $_SERVER["DOCUMENT_ROOT"]."/settings/db_info.php";
+    require $_SERVER["DOCUMENT_ROOT"]."/settings/settings.php";
 
     // DB 생성 SQL
     $SQL_CREATE_DATABASE = "CREATE DATABASE IF NOT EXISTS " . $MYSQL_DATABASE_NAME . ";";
