@@ -66,7 +66,7 @@ if (!$isJoin) {
 $creator = getUserByUserId($issue['issue_creator_id']);
 $creatorNickname = "알 수 없음";
 if (!empty($creator))
-    $creator_nickname = $creator['user_nickname'];
+    $creatorNickname = $creator['user_nickname'];
 
 // 포함된 마일스톤 구하기
 $milestone = array();
@@ -146,8 +146,6 @@ $comments = getCommentcontainsIssue($issue['issue_id']);
                 }
             }
         });
-
-
     }
 
 </script>
