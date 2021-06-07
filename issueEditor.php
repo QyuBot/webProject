@@ -12,13 +12,6 @@ if(!defined('DirectAccessCheck')){
     header('HTTP/1.0 404 Not Found', true, 404);
     exit;
 }
-
-// 수정 모드로 들어온 경우
-if (isset($_POST['editPostId'])) {
-
-
-}
-
 ?>
 
 <h1>이슈 생성하기</h1>
@@ -33,10 +26,10 @@ if (isset($_POST['editPostId'])) {
         <div class="form-group">
             <input type="text" class="form-control" id="title" name="title" placeholder="제목">
             <br>
-            우선순위&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" onclick="btn_priority_toggle(this);">1 순위</button>
+            우선순위&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-danger" id="btn-priority" onclick="btn_priority_toggle(this);">1 순위</button>
             <br>
             <br>
-            상태&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-light" value="" onclick="btn_status_toggle(this);">해결안됨</button>
+            상태&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-light" id="btn-status" onclick="btn_status_toggle(this);">해결안됨</button>
             <br>
             <br>
             마일스톤&nbsp;&nbsp;&nbsp;
@@ -61,11 +54,44 @@ if (isset($_POST['editPostId'])) {
                 <input type="file" multiple class="form-input" name="afile" id="afile" />
             </div>
         </div>
-        <button type="button" class="btn contact-btn" onclick="writeIssue();">WRITE</button>
+        <button type="button" id="btn-write" class="btn contact-btn" onclick="writeButton();">WRITE</button>
     </form>
 </div>
 
 <script type="text/javascript">
+
+    var isEditPost = false;
+
+    function editMode(issue) {
+
+        isEditPost = true;
+
+        const inputTitle = document.getElementById('title');
+        const inputPriority = document.getElementById('priority');
+        const inputStatus = document.getElementById('status');
+        const inputMilestone = document.getElementById('milestoneId');
+        const inputContent = document.getElementById('summernote');
+
+        const buttonPriority = document.getElementById('btn-priority');
+        const buttonStatus = document.getElementById('btn-status');
+
+        console.log(issue);
+
+        inputTitle.value = issue['issue_title'];
+        inputPriority.value = issue['issue_priority'];
+        inputStatus.value = issue['issue_status'];
+        if (issue['issue_inclusion_milestone_id'] == null || issue['issue_inclusion_milestone_id'] === -1)
+            inputMilestone.value = -1;
+        else
+            inputMilestone.value = issue['issue_inclusion_milestone_id'];
+
+        inputContent.value = issue['issue_article'];
+
+        btn_priority_refresh(buttonPriority);
+        btn_status_refresh(buttonStatus);
+
+
+    }
 
     $(document).ready(function() {
         var $summernote = $('#summernote').summernote({
@@ -130,46 +156,111 @@ if (isset($_POST['editPostId'])) {
         switch (input.value) {
             default:
             case "1":
-                btn.className = "btn btn-warning";
-                btn.innerText = "2 순위"
                 input.value = 2;
+                btn_priority_refresh(btn);
                 break;
             case "2":
-                btn.className = "btn btn-light";
-                btn.innerText = "3 순위"
                 input.value = 3;
+                btn_priority_refresh(btn);
                 break;
             case "3":
-                btn.className = "btn btn-secondary";
-                btn.innerText = "4 순위"
                 input.value = 4;
+                btn_priority_refresh(btn);
                 break;
             case "4":
-                btn.className = "btn btn-danger";
-                btn.innerText = "1 순위"
                 input.value = 1;
+                btn_priority_refresh(btn);
                 break;
         }
+    }
+
+    function btn_priority_refresh(btn) {
+        const input = document.getElementById("priority");
+        switch (input.value) {
+            default:
+            case "1":
+                btn.className = "btn btn-danger";
+                btn.innerText = "1 순위";
+                break;
+            case "2":
+                btn.className = "btn btn-warning";
+                btn.innerText = "2 순위";
+                break;
+            case "3":
+                btn.className = "btn btn-light";
+                btn.innerText = "3 순위";
+                break;
+            case "4":
+                btn.className = "btn btn-secondary";
+                btn.innerText = "4 순위";
+                break;
+        }
+
     }
 
     function btn_status_toggle(btn) {
         const input = document.getElementById("status");
         switch (input.value) {
             case "0":
-                btn.className = "btn btn-success";
-                btn.innerText = "해결됨"
                 input.value = 1;
+                btn_status_refresh(btn);
                 break;
             default:
             case "1":
-                btn.className = "btn btn-light";
-                btn.innerText = "해결안됨"
                 input.value = 0;
+                btn_status_refresh(btn);
+        }
+    }
+
+    function btn_status_refresh(btn) {
+        const input = document.getElementById("status");
+        switch (input.value) {
+            case "0":
+                btn.className = "btn btn-light";
+                btn.innerText = "해결안됨";
+                break;
+            default:
+            case "1":
+                btn.className = "btn btn-success";
+                btn.innerText = "해결됨";
         }
     }
 
     // 글쓰기 버튼 클릭 시
-    function writeIssue() {
+    function writeButton() {
+        if (isEditPost)
+            postEditIssue();
+        else
+            postNewIssue();
+    }
+
+    function postNewIssue() {
+        const formData = $("#editorForm").serialize();
+        $.ajax(
+            {
+                type: "POST",
+                url:"/db/issue/saveIssue.php",
+                data:formData,
+                success: (code) => {
+                    switch(code) {
+                        case "success":
+                            alert('이슈가 작성되었습니다.');
+                            const projectId = getParameterByName('projectId');
+                            window.location.href='/?projectId=' + projectId + '&page=issue';
+                            break;
+                        case "access_denied":
+                            alert('접근이 거부되었습니다.');
+                            window.location.href='/?projectId=' + projectId + '&page=issue';
+                            break;
+                        default:
+                            alert('에러가 발생했습니다.');
+                    }
+                }
+            }
+        )
+    }
+
+    function postNewEditIssue() {
         const formData = $("#editorForm").serialize();
         $.ajax(
             {
@@ -195,3 +286,19 @@ if (isset($_POST['editPostId'])) {
         )
     }
 </script>
+
+<?php
+// 수정 모드로 들어온 경우
+if (isset($_GET['issueId'])) {
+    require_once $_SERVER["DOCUMENT_ROOT"] . "/db/issue/issueService.php";
+
+    $issue = getIssueByIssueId($_GET['issueId']);
+    if (empty($issue)) {
+        echo "<script>alert('없는 이슈입니다.');</script>";
+        echo "<script>window.location.href='/?projectId=' + projectId + '&page=issue';</script>";
+        exit;
+    }
+    else
+        echo "<script>editMode(".json_encode($issue).");</script>";
+}
+?>

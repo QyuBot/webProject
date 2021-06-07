@@ -31,7 +31,8 @@ else {
         echo "이슈 제목 : {$issue['issue_title']}<br>";
         echo "상태 : ".($issue['issue_status'] == 1 ? "해결됨" : "해결안됨")."<br>";
         echo "우선순위 : {$issue['issue_priority']} 순위<br>";
-        echo "<a href='/?projectId={$_GET['projectId']}&page=issueViewer&issueId={$issue['issue_id']}'>이슈 조회하기</a>";
+        echo "<a href='/?projectId={$_GET['projectId']}&page=issueViewer&issueId={$issue['issue_id']}'>이슈 조회하기</a><br>";
+        echo "<a href='/?projectId={$_GET['projectId']}&page=issueEditor&issueId={$issue['issue_id']}'>이슈 수정하기</a><br>";
         echo "</div>";
     }
 }

@@ -52,7 +52,7 @@ function getPrograssPercentage($milestoneId) {
     $issues = getIssueContainsMilestone($milestoneId);
 
     $total = count($issues);
-    $unsolved = 0;
+        $unsolved = 0;
 
     // Divid by Zero 방지
     if ($total == 0)

@@ -47,13 +47,13 @@ function getIssueListinProjectAndSolved($projectId): array
 }
 
 // 이슈 ID로 이슈 객체 구하기
-function getIssueByIssueId($milestoneId): array
+function getIssueByIssueId($issueId): array
 {
     $pdo = getPDO();
     $sql = "SELECT * FROM issues WHERE issue_id = :issueId;";
     $stmt = $pdo->prepare($sql);
 
-    $stmt->bindValue(':issueId', $milestoneId, PDO::PARAM_INT);
+    $stmt->bindValue(':issueId', $issueId, PDO::PARAM_INT);
 
     $stmt->execute();
 
