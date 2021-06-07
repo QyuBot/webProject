@@ -14,12 +14,13 @@ if(!defined('DirectAccessCheck')){
 }
 ?>
 
-<h1>이슈 생성하기</h1>
+<h1 id="pageTitle">이슈 생성하기</h1>
 <br>
 
 <div class="col-12 col-md-12 item">
     <form action="/db/issue/saveIssue.php" method="post" id="editorForm">
         <input type="hidden" name="imgUrl" id="imgUrl" value="">
+        <input type="hidden" name="issueId" id="issueId" value="-1">
         <input type="hidden" name="projectId" id="projectId" value="<?=$_GET['projectId']?>">
         <input type="hidden" name="priority" id="priority" value="1">
         <input type="hidden" name="status" id="status" value="0">
@@ -61,11 +62,14 @@ if(!defined('DirectAccessCheck')){
 <script type="text/javascript">
 
     var isEditPost = false;
+    var projectId = getParameterByName('projectId');
 
     function editMode(issue) {
 
         isEditPost = true;
 
+        const h1Title = document.getElementById('pageTitle');
+        const inputIssueId = document.getElementById('issueId');
         const inputTitle = document.getElementById('title');
         const inputPriority = document.getElementById('priority');
         const inputStatus = document.getElementById('status');
@@ -74,14 +78,15 @@ if(!defined('DirectAccessCheck')){
 
         const buttonPriority = document.getElementById('btn-priority');
         const buttonStatus = document.getElementById('btn-status');
+        const buttonWrite = document.getElementById('btn-write');
 
-        console.log(issue);
-
+        inputIssueId.value = issue[['issue_id']];
         inputTitle.value = issue['issue_title'];
         inputPriority.value = issue['issue_priority'];
         inputStatus.value = issue['issue_status'];
+
         if (issue['issue_inclusion_milestone_id'] == null || issue['issue_inclusion_milestone_id'] === -1)
-            inputMilestone.value = -1;
+            inputMilestone.value = '-1';
         else
             inputMilestone.value = issue['issue_inclusion_milestone_id'];
 
@@ -89,6 +94,9 @@ if(!defined('DirectAccessCheck')){
 
         btn_priority_refresh(buttonPriority);
         btn_status_refresh(buttonStatus);
+
+        h1Title.innerText = '이슈 수정하기';
+        buttonWrite.innerText = 'EDIT';
 
 
     }
@@ -239,13 +247,12 @@ if(!defined('DirectAccessCheck')){
         $.ajax(
             {
                 type: "POST",
-                url:"/db/issue/saveIssue.php",
-                data:formData,
+                url: "/db/issue/saveIssue.php",
+                data: formData,
                 success: (code) => {
                     switch(code) {
                         case "success":
                             alert('이슈가 작성되었습니다.');
-                            const projectId = getParameterByName('projectId');
                             window.location.href='/?projectId=' + projectId + '&page=issue';
                             break;
                         case "access_denied":
@@ -260,18 +267,18 @@ if(!defined('DirectAccessCheck')){
         )
     }
 
-    function postNewEditIssue() {
+    function postEditIssue() {
         const formData = $("#editorForm").serialize();
         $.ajax(
             {
                 type: "POST",
-                url:"/db/issue/saveIssue.php",
-                data:formData,
+                url: "/db/issue/updateIssue.php",
+                data: formData,
                 success: (code) => {
+                    console.log(code);
                     switch(code) {
                         case "success":
-                            alert('이슈가 작성되었습니다.');
-                            const projectId = getParameterByName('projectId');
+                            alert('이슈가 수정되었습니다.');
                             window.location.href='/?projectId=' + projectId + '&page=issue';
                             break;
                         case "access_denied":
@@ -285,6 +292,8 @@ if(!defined('DirectAccessCheck')){
             }
         )
     }
+
+
 </script>
 
 <?php

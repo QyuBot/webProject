@@ -11,10 +11,11 @@ if (!isset($_POST['title'])
     || !isset($_POST['status'])
     || !isset($_POST['milestoneId'])
     || !isset($_POST['issueId'])) {
-    echo "missing_arg(s)";
+    echo json_encode($_POST);
     exit;
 }
 
+// 수정하려는 이슈가 존재하지 않는 경우
 $issue = getIssueByIssueId($_POST['issueId']);
 if (empty($issue)) {
     echo "issue_not_exist";
@@ -26,10 +27,23 @@ if (empty($issue)) {
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 
+$projectId = $issue['issue_inclusion_project_id'];
 $creatorId = $_SESSION['sess'];
-if (!isUserJoinedProject($_POST['projectId'], $creatorId)) {
+if (!isUserJoinedProject($projectId, $creatorId)) {
     echo "access_denied";
     exit;
+}
+
+// 프로젝트에 존재하지 않는 마일스톤 ID 이 아닌 경우
+$milestoneId = $_POST['milestoneId'];
+if ($milestoneId != -1) {
+    $milestone = getMilestoneByMilestoneId($milestoneId);
+    if ($milestone['milestone_inclusion_project_id'] != $projectId) {
+        echo "mid : ".$milestone['milestone_inclusion_project_id'];
+        echo "pid : ".$projectId;
+        echo "milestone_error";
+        exit;
+    }
 }
 
 // 우선순위, 상태가 범위 외 일 경우
@@ -45,8 +59,13 @@ if (!(0 <= $status && $status <= 1)) {
     exit;
 }
 
-$result = editIssue($creatorId, $_POST['title'], $_POST['contents'], $priority, $status, $milestoneId);
-if ($result)
-    echo "success";
-else
-    echo "fail";
+$result = editIssue($_POST['issueId'], $_POST['title'], $_POST['contents'], $priority, $status, $milestoneId);
+
+echo $result;
+
+
+//
+//if ($result)
+//    echo "success";
+//else
+//    echo "fail";

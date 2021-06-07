@@ -80,7 +80,7 @@ function isIssueNameExist($projectId, $title) {
 function isIssueNameExistinContainsProject($issueId, $title) {
 
     $issue = getIssueByIssueId($issueId);
-    $projectId = $issueId['issue_inclusion_project_id'];
+    $projectId = $issue['issue_inclusion_project_id'];
 
     return isIssueNameExist($projectId, $title);
 }
@@ -133,9 +133,13 @@ function addIssue($creatorId, $title, $contents, $priority, $status, $projectId,
 // 수정자에 대한 검증 로직은 없습니다(해당 함수를 호출 가능하면 누구나 수정 가능)
 function editIssue($issueId, $title, $contents, $priority, $status, $milestoneId) {
 
+    $issue = getIssueByIssueId($issueId);
+    if (empty($issue))
+        return "empty : {$issueId}";
+
     // 중복 이름 방지
-    if (isIssueNameExistinContainsProject($issueId, $title))
-        return false;
+    if ($issue['issue_title'] != $title && isIssueNameExistinContainsProject($issueId, $title))
+        return "dupname";
 
     $pdo = getPDO();
     $sql = "UPDATE issues SET issue_title = :title, 
@@ -154,7 +158,10 @@ function editIssue($issueId, $title, $contents, $priority, $status, $milestoneId
         $stmt->bindValue(':priority', $priority, PDO::PARAM_INT);
         $stmt->bindValue(':content', $contents, PDO::PARAM_STR);
         $stmt->bindValue(':status', $status, PDO::PARAM_INT);
-        $stmt->bindValue(':milestoneId', $milestoneId, PDO::PARAM_INT);
+        if ($milestoneId == -1)
+            $stmt->bindValue(':milestoneId', null);
+        else
+            $stmt->bindValue(':milestoneId', $milestoneId, PDO::PARAM_INT);
         $stmt->bindValue(':issueId', $issueId, PDO::PARAM_INT);
 
         // 데이터 삽입
@@ -162,12 +169,12 @@ function editIssue($issueId, $title, $contents, $priority, $status, $milestoneId
 
         // 성공 시 변경점 저장 후 true 리턴
         $pdo->commit();
-        return true;
+        return "success";
 
         // 작업 도중 예외 발생 시 복구 지점으로 롤백 후 false 반환
     } catch (PDOException $e) {
         $pdo->rollback();
-        return false;
+        return $e;
     }
 }
 

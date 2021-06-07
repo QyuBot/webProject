@@ -56,6 +56,17 @@
                 </ul>
             </div>
         </nav>
+
+        <script type="text/javascript">
+
+            function getParameterByName(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                    results = regex.exec(location.search);
+                return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
+
+        </script>
     </header>
     <?php
     // GET 으로 선택한 프로젝트가 없을 경우 -> 프로젝트 목록으로 이동
@@ -91,14 +102,3 @@
 
 </body>
 </html>
-
-<script type="text/javascript">
-
-    function getParameterByName(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
-
-</script>
