@@ -118,6 +118,25 @@ function getProject($projectId): array
 
 }
 
+// 프로젝트 정보 구하기
+function getProjectByProjectId($projectId): array
+{
+
+    $pdo = getPDO();
+    $sql = "SELECT * FROM projects WHERE project_id = :projectId;";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindParam(':projectId', $projectId, PDO::PARAM_INT);
+
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+    if (count($result) == 1)
+        return $result[0];
+    else
+        return array();
+
+}
+
 // 프로젝트에 포함된 이슈 리스트 구하기
 function getProjectIssuesList($projectId) {
 

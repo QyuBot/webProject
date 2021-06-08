@@ -10,85 +10,64 @@
     }
 </style>
 
-<h1>프로젝트 목록</h1>
 <?php
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/db/user/userService.php";
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/db/project/projectService.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/db/user/userService.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/db/project/projectService.php";
 
-    // 현재 유저가 참가하고 안한 프로젝트 리스트를 구한다
-    if (session_status() == PHP_SESSION_NONE)
-        session_start();
-    $projectList = getJoinorNotProjectList($_SESSION['sess']);
+// 현재 유저가 참가하고 안한 프로젝트 리스트를 구한다
+if (session_status() == PHP_SESSION_NONE)
+    session_start();
+$projectList = getJoinorNotProjectList($_SESSION['sess']);
 ?>
-<hr>
-테스트 영역
-<br>
-<?php
 
-?>
-<hr>
-<button type="button" onclick="createProject();">프로젝트 생성하기</button>
-
-<?php
-// 프로젝트가 하나도 없다면
-if ((count($projectList['join']) + count($projectList['notJoin'])) == 0) {
-    echo "<h3>아직 생성된 프로젝트가 없네요</h3>";
-}
-// 하나라도 존재한다면
-else {
-    echo <<<EOT
-    <h3>참가한 프로젝트</h3>
+<main>
+    <button type="button" onclick="createProject();">프로젝트 생성하기</button>
+    <h3>프로젝트 제목</h3>
     <hr>
-EOT;
+    <article id="my-project">
+        <h3>참가한 프로젝트 : <?= count($projectList['join']) ?>개</h3>
+        <div class="my-box">
+            <?php
+            if (count($projectList['join']) == 0)
+                echo "<p>아직 참가한 프로젝트가 없어요</p>";
+            else {
+                foreach($projectList['join'] as $row) {
+                    $projectName = getProjectNameByProjectId($row);
+                    $projectNumofCollaborators = count(getNumberofProjectCollaborators($row));
+                    echo "<div class='project'>";
+                    echo "프로젝트 ID : {$row}<br>";
+                    echo "프로젝트 이름 : {$projectName}<br>";
+                    echo "참가자 수 : {$projectNumofCollaborators}<br>";
+                    echo "<a href='/?projectId={$row}'>프로젝트 대쉬보드로 이동하기</a>";
+                    echo "</div>";
+                }
+            }
+            ?>
+        </div>
+    </article>
+    <article id="you-project">
+        <h3>다른 프로젝트 : <?= count($projectList['notJoin']) ?>개</h3>
+        <div class="you-box">
+            <?php
+            if (count($projectList['notJoin']) == 0)
+                echo "<p>존재하는 모든 프로젝트에 참가중이시네요!</p>";
+            else {
+                foreach($projectList['notJoin'] as $row) {
+                    $projectName = getProjectNameByProjectId($row);
+                    $projectNumofCollaborators = count(getNumberofProjectCollaborators($row));
+                    echo "<div class='project'>";
+                    echo "프로젝트 ID : {$row}<br>";
+                    echo "프로젝트 이름 : {$projectName}<br>";
+                    echo "참가자 수 : {$projectNumofCollaborators}<br>";
+                    echo "<a href='/?projectId={$row}'>참가하기</a>";
+                    echo "</div>";
+                }
+            }
 
-    if (count($projectList['join']) == 0) {
-        echo "<p>아직 참가한 프로젝트가 없어요</p>";
-    }
-    else {
-        foreach($projectList['join'] as $row) {
-            $projectName = getProjectNameByProjectId($row);
-            $projectNumofCollaborators = count(getNumberofProjectCollaborators($row));
-            echo "<div class='project'>";
-            echo "프로젝트 ID : {$row}<br>";
-            echo "프로젝트 이름 : {$projectName}<br>";
-            echo "참가자 수 : {$projectNumofCollaborators}<br>";
-            echo "<a href='/?projectId={$row}'>프로젝트 대쉬보드로 이동하기</a>";
-            echo "</div>";
-        }
-    }
-
-    echo <<<EOT
-    <br>
-    <br>
-    <br>
-    <h3>참가 안한 프로젝트</h3>
-    <hr>
-EOT;
-
-    if (count($projectList['notJoin']) == 0) {
-        echo "<p>존재하는 모든 프로젝트에 참가중이시네요!</p>";
-    }
-    else {
-        foreach($projectList['notJoin'] as $row) {
-            $projectName = getProjectNameByProjectId($row);
-            $projectNumofCollaborators = count(getNumberofProjectCollaborators($row));
-            echo "<div class='project'>";
-            echo "프로젝트 ID : {$row}<br>";
-            echo "프로젝트 이름 : {$projectName}<br>";
-            echo "참가자 수 : {$projectNumofCollaborators}<br>";
-            echo "<a href='/?projectId={$row}'>참가하기</a>";
-            echo "</div>";
-        }
-    }
-    echo <<<EOT
-    <br>
-    <br>
-    <br>
-EOT;
-}
-
-?>
-
+            ?>
+        </div>
+    </article>
+</main>
 
 <script type="text/javascript">
 
@@ -127,13 +106,11 @@ EOT;
                     }
                 )
             }
-            else {
+            else
                 alert('프로젝트가 생성되지 않았습니다.');
-            }
         }
-        else {
+        else
             alert('프로젝트가 생성되지 않았습니다.');
-        }
 
     }
 

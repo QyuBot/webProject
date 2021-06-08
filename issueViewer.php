@@ -84,39 +84,44 @@ $comments = getCommentcontainsIssue($issue['issue_id']);
 <p>이슈 작성자 닉네임 : <?=$creatorNickname?></p>
 <p>이슈 우선순위 : <?=$issue['issue_priority']?> 순위</p>
 <p>이슈 상태 : <?php echo ($issue['issue_status'] == 1 ? "해결됨" : "해결안됨");?></p>
+<?php echo "<a href='/?projectId={$_GET['projectId']}&page=issueEditor&issueId={$issue['issue_id']}'>이슈 수정하기</a><br>"; ?>
 <h3>이슈 본문</h3>
 <hr>
 <div class="article">
     <?php echo $issue['issue_article']?>
 </div>
 <hr>
-<h3>댓글 영역</h3>
-<input type="hidden" id="hidden_issueId" value="<?=$issue['issue_id']?>">
-댓글 작성하기 <input type="text" id="writecomment"><button type="button" class="btn btn-primary" onclick="postComment();">작성하기</button>
-<br>
-<br>
-<?php
-    if (count($comments) == 0)
-        echo "<h3>아직 댓글이 없어요</h3>";
-    else {
+<main>
+    <div id="comments">
+        <input type="hidden" id="hidden_issueId" value="<?=$issue['issue_id']?>">
+        <div id="comment-head" class="comment-row">
+            <span id="comments-count">2</span> Comment(s)
+        </div>
+        <div class="comment-row">
+            <textarea name="new_comment" id="writecomment" rows="5" placeholder="New comment"></textarea>
+            <button type="submit" onclick="postComment();">Submit</button>
+        </div>
+        <?php
+        if (count($comments) == 0)
+            echo "<div class='comment-content'>아직 댓글이 없어요</div>";
+        else {
+            foreach ($comments as $comment) {
+                $commentCreator = getUserByUserId($comment['comment_creator_id']);
+                $commentCreatorNickname = "알 수 없음";
+                if (!empty($commentCreator))
+                    $commentCreatorNickname = $commentCreator['user_nickname'];
 
-        foreach ($comments as $comment) {
-            $commentCreator = getUserByUserId($comment['comment_creator_id']);
-            $commentCreatorNickname = "알 수 없음";
-            if (!empty($commentCreator))
-                $commentCreatorNickname = $commentCreator['user_nickname'];
-            echo "<div class='comment'>";
-            echo "<p>작성자 : {$commentCreatorNickname} / 작성일자 : {$comment['comment_create_time']}</p><br>";
-            echo "<p>내용 : {$comment['comment_content']}</p>";
-            echo "</div>";
+                echo "<div class='comment-row'>";
+                echo "<div class='comment-date'>{$comment['comment_create_time']}</div>";
+                echo "<div class='comment-content'>{$commentCreatorNickname} : {$comment['comment_content']}</div>";
+                echo "</div>";
 
+            }
         }
-    }
-?>
-<br>
-<br>
-<br>
-<br>
+        ?>
+    </div>
+</main>
+
 <br>
 <br>
 <br>

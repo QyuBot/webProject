@@ -2,11 +2,7 @@
 
 <style>
     .milestone {
-        border: 1px solid gray;
-        margin: 3px;
-        padding: 3px;
-        width: 600px;
-        height: 140px;
+
     }
 </style>
 
@@ -17,32 +13,33 @@ if(!defined('DirectAccessCheck')){
 }
 ?>
 
-<h1>마일스톤 목록</h1>
-<br>
-<button type="button" onclick="createMilestone();">마일스톤 생성하기</button>
-<br>
-<br>
 
-<?php
+<main>
+    <h3 style="display: inline-block;">MILESTONE</h3><button style="width: 200px;" type="button" onclick="createMilestone();">마일스톤 생성하기</button>
+    <hr>
+    <?php
 
-require_once $_SERVER["DOCUMENT_ROOT"] . "/db/milestone/milestoneService.php";
-$milestones = getMilestoneListinProject($_GET['projectId']);
-if (count($milestones) == 0)
-    echo "이정표(마일스톤)가 없네요. 길을 잃었어요";
-else {
-    foreach ($milestones as $milestone) {
-        $containsIssues = getIssueContainsMilestone($milestone['milestone_id']);
-        echo "<div class='milestone'>";
-        echo "마일스톤 이름 : {$milestone['milestone_name']}<br>";
-        echo "포함된 이슈 갯수 : ".count($containsIssues)."<br>";
-        echo "진행도 : ".getPrograssPercentage($milestone['milestone_id'])." %<br>";
-        echo "<button type='button' onclick='deleteMilestone({$milestone['milestone_id']});'>마일스톤 삭제하기</button>";
-        echo "<button type='button' onclick='renameMilestone({$milestone['milestone_id']});'>마일스톤 이름 변경하기</button>";
-        echo "</div>";
+    require_once $_SERVER["DOCUMENT_ROOT"] . "/db/milestone/milestoneService.php";
+    $milestones = getMilestoneListinProject($_GET['projectId']);
+    if (count($milestones) == 0)
+        echo "이정표(마일스톤)가 없네요. 길을 잃었어요";
+    else {
+        foreach ($milestones as $milestone) {
+            $containsIssues = getIssueContainsMilestone($milestone['milestone_id']);
+            $prograss = round(getPrograssPercentage($milestone['milestone_id']));
+
+            echo "<div class='milestone'>";
+            echo "<div class='milestone-progress'><progress value='{$prograss}' max='100' style='height:40px;'></progress><b>{$prograss}%</b></div>";
+            echo "포함된 이슈 갯수 : ".count($containsIssues)."<br>";
+            echo "<button type='button' onclick='deleteMilestone({$milestone['milestone_id']});'>마일스톤 삭제하기</button>";
+            echo "<button type='button' onclick='renameMilestone({$milestone['milestone_id']});'>마일스톤 이름 변경하기</button>";
+            echo "</div>";
+        }
     }
-}
 
-?>
+    ?>
+</main>
+
 
 <br>
 <script type="text/javascript">

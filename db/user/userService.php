@@ -141,8 +141,11 @@ function isUserIDExist($id) {
 
 // 현재 세션을 닉네임으로 변환하여 반환하는 함수
 function sessionToNickname(){
-    session_start();
+
     // 세션이 userId를 가지고 있는가?
+    if (session_status() == PHP_SESSION_NONE)
+        session_start();
+
     if (isset($_SESSION['sess'])){
         $index = $_SESSION['sess'];
 

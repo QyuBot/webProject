@@ -1,36 +1,11 @@
 
 
 <?php $url = "/?projectId={$_GET['projectId']}"; ?>
-<ul class="nav nav-tabs">
-    <li class="nav-item">
-        <a class="nav-link" id="nav1" href="<?=$url?>">대시보드</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="nav2" href="<?=$url."&page=milestone"?>"">마일스톤</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="nav3" href="<?=$url."&page=issue"?>">이슈</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="nav4" href="<?=$url."&page=report"?>">보고서</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" id="nav5" href="<?=$url."&page=setting"?>">프로젝트 설정</a>
-    </li>
-</ul>
-
-<script type="text/javascript">
-
-    function activeNav(id) {
-        var nav = document.getElementById('nav' + id);
-        nav.className = "nav-link active";
-    }
-
-</script>
 
 
 
 <?php
+    // GET page 값에 따라 별도의 페이지 출력
     if (isset($_GET['page'])) {
         switch ($_GET['page']) {
             case "milestone":
@@ -49,12 +24,20 @@
                 echo "<script type='text/javascript'>activeNav(3);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/issueViewer.php";
                 break;
-            case "report":
+            case "member":
                 echo "<script type='text/javascript'>activeNav(4);</script>";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/member.php";
+                break;
+            case "report":
+                echo "<script type='text/javascript'>activeNav(5);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/reports.php";
                 break;
+            case "freeboard":
+                echo "<script type='text/javascript'>activeNav(6);</script>";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/freeboard.php";
+                break;
             case "setting":
-                echo "<script type='text/javascript'>activeNav(5);</script>";
+                echo "<script type='text/javascript'>activeNav(7);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/projectSettings.php";
                 break;
             default:

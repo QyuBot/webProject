@@ -1,4 +1,3 @@
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
@@ -267,6 +266,7 @@ if(!defined('DirectAccessCheck')){
 
     function postEditIssue() {
         const formData = $("#editorForm").serialize();
+        const issueId = getParameterByName('issueId');
         $.ajax(
             {
                 type: "POST",
@@ -277,7 +277,7 @@ if(!defined('DirectAccessCheck')){
                     switch(code) {
                         case "success":
                             alert('이슈가 수정되었습니다.');
-                            window.location.href='/?projectId=' + projectId + '&page=issue';
+                            window.location.href='/?projectId=' + projectId + '&page=issueViewer&issueId=' + issueId;
                             break;
                         case "access_denied":
                             alert('접근이 거부되었습니다.');
