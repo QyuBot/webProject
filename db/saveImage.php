@@ -1,7 +1,7 @@
 <?php
 // 사진 업로드 php
-require_once $_SERVER["DOCUMENT_ROOT"]."/db/db_function.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."/settings/settings.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/db/db_function.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/settings/settings.php";
 
 global $DIR_IMAGES;
 

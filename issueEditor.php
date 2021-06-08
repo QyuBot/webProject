@@ -131,15 +131,13 @@ if(!defined('DirectAccessCheck')){
         var formData = new FormData();
         formData.append("file", file);
         $.ajax({
-            url: '/board/saveImage.php',
+            url: '/db/saveImage.php',
             data: formData,
             cache: false,
             contentType: false,
             processData: false,
             type: 'POST',
             success: function (data) {
-                console.log("asdf");
-                console.log("data : " + data);
                 if (data === -1){
                     alert('용량이 너무크거나 이미지 파일이 아닙니다.');
                     return;
