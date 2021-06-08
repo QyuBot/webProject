@@ -11,64 +11,33 @@ if(!defined('DirectAccessCheck')){
     <section>
         <h3>Report</h3>
         <hr>
+        <?php
+
+        require_once $_SERVER["DOCUMENT_ROOT"] . "/db/report/reportService.php";
+        $reports = getReportListinProject($_GET['projectId']);
+        if (count($reports) == 0)
+            echo "작성한 리포트가 없어요.";
+        else {
+            foreach ($reports as $report) {
+                echo "<div class='issue'>";
+                echo "이슈 제목 : {$report['report_title']}<br>";
+                echo "<a href='/?projectId={$_GET['projectId']}&page=reportViewer&reportId={$report['report_id']}'>리포트 조회하기</a><br>";
+                echo "</div>";
+            }
+        }
+        ?>
         <div class="btnList">
-            <button id="new">글 작성</button>
-            <button id="ref">글 수정</button>
-            <button id="del">글 삭제</button>
+            <button id="new" onclick="goReportEditor();">글 작성</button>
         </div>
     </section>
+</main>
 
-    <hr>
+<script>
 
-    <section>
-        <div id="comments">
-            <div id=comment-head class="comment-row">
-                <span id="comments-count">0</span> Comment(s)
-            </div>
-        </div>
-        <div class="comment-row">
-            <textarea id="new-comment" name="new_comment" rows=5 placeholder="New Comment"></textarea>
-            <button type="submit" onclick="submitComment()">작성</button>
-        </div>
-    </section>
+    function goReportEditor() {
+        var projectId = getParameterByName('projectId');
+        window.location.href='/?projectId=' + projectId + '&page=reportEditor';
+    }
 
 
-<script type="text/javascript">
-    function warnEmpty(){
-        alert("내용을 입력해주세요.");
-    } /*빈칸일때 경고함수*/
-
-    function dateToString(date){
-        var dateString = date.toISOString();
-        var dateToString = dateString.substring(0, 10) + " " + dateString.substring(11, 19);
-        return dateToString;
-    } /*날짜 받아오기*/
-
-    function submitComment(){
-        var newcommentEL = document.getElementById("new-comment");
-        var newcomment = newcommentEL.value.trim();
-
-        if(newcomment){
-            var dateEL = document.createElement('div');
-            dateEL.classList.add("comment-date");
-            var dateString = dateToString(new Date());
-            dateEL.innerText = dateString;
-
-            var contentEL = document.createElement('div');
-            contentEL.classList.add("comment-content");
-            contentEL.innerText = newcomment;
-
-            var commentEL = document.createElement('div');
-            commentEL.classList.add('comment-row');
-            commentEL.appendChild(dateEL);
-            commentEL.appendChild(contentEL);
-
-            document.getElementById('comments').appendChild(commentEL);
-            newcommentEL.value="";
-
-            var countEL = document.getElementById('comments-count');
-            var count = countEL.innerText;
-            countEL.innerText = parseInt(count)+1;
-        } else warnEmpty();
-    } // 댓글 입력
 </script>

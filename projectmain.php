@@ -32,6 +32,14 @@
                 echo "<script type='text/javascript'>activeNav(5);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/reports.php";
                 break;
+            case "reportEditor":
+                echo "<script type='text/javascript'>activeNav(5);</script>";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/reportEditor.php";
+                break;
+            case "reportViewer":
+                echo "<script type='text/javascript'>activeNav(5);</script>";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/reportViewer.php";
+                break;
             case "freeboard":
                 echo "<script type='text/javascript'>activeNav(6);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/freeboard.php";

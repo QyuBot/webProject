@@ -135,11 +135,11 @@ function editIssue($issueId, $title, $contents, $priority, $status, $milestoneId
 
     $issue = getIssueByIssueId($issueId);
     if (empty($issue))
-        return "empty : {$issueId}";
+        return false;
 
     // 중복 이름 방지
     if ($issue['issue_title'] != $title && isIssueNameExistinContainsProject($issueId, $title))
-        return "dupname";
+        return false;
 
     $pdo = getPDO();
     $sql = "UPDATE issues SET issue_title = :title, 
@@ -169,12 +169,12 @@ function editIssue($issueId, $title, $contents, $priority, $status, $milestoneId
 
         // 성공 시 변경점 저장 후 true 리턴
         $pdo->commit();
-        return "success";
+        return true;
 
         // 작업 도중 예외 발생 시 복구 지점으로 롤백 후 false 반환
     } catch (PDOException $e) {
         $pdo->rollback();
-        return $e;
+        return false;
     }
 }
 
