@@ -68,6 +68,7 @@
     ?>
 </header-script>
 <script type="text/javascript">
+
     // 현재 클라이언트가 접속한 URL에서 GET 메소드를 가져오는 함수
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -81,6 +82,7 @@
         var nav = document.getElementById('nav' + id);
         nav.className = 'nav__link active';
     }
+
 </script>
 <body id="body-pd">
     <!-- Navbar Start -->

@@ -336,7 +336,6 @@
                     nickname: input.value,
                 },
                 success: (code) => {
-                    console.log(code);
                     switch(code) {
                         case "no_args":
                             result_span.innerText = "닉네임을 입력해주세요"
@@ -439,6 +438,7 @@
                     switch(code) {
                         case "success":
                             alert("회원가입 성공");
+                            window.location.href='/login.php';
                             break;
                         case "fail":
                             alert("회원가입 실패");

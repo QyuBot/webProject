@@ -182,26 +182,29 @@ function editIssue($issueId, $title, $contents, $priority, $status, $milestoneId
 // 이슈에 달린 댓글들도 전부 삭제됩니다.
 function deleteIssue($issueId) {
 
-    if (deleteCommtentsinIssue($issueId))
+    if (!deleteCommtentsinIssue($issueId))
         return false;
 
     $pdo = getPDO();
+    $sqlIssue = "DELETE FROM issues WHERE issue_id = :issueId;";
+    $stmtIssue = $pdo->prepare($sqlIssue);
 
-    $sql = "DELETE FROM issues WHERE issue_id = :issueId;";
-    $stmt = $pdo->prepare($sql);
+    $pdo = getPDO();
 
     try {
         $pdo->beginTransaction();
-        $stmt->bindValue(':issueId', $issueId, PDO::PARAM_INT);
-        $stmt->execute();
+
+        // 이슈 삭제
+        $stmtIssue->bindValue(':issueId', $issueId, PDO::PARAM_INT);
+        $stmtIssue->execute();
+
+        // 커밋
         $pdo->commit();
     } catch (PDOException $e) {
         $pdo->rollback();
         return false;
     }
     return true;
-
-
 }
 
 // 이슈에 달린 모든 댓글 구하기

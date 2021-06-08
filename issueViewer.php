@@ -35,20 +35,23 @@ if(!defined('DirectAccessCheck')){
 
 // 이슈 ID 매개변수가 없는가?
 if (!isset($_GET['issueId'])) {
-    header("Location: /?projectId={$_GET['projectId']}&page=issue");
+    echo "<script>alert('잘못된 접근입니다.');</script>";
+    echo "<script>window.location.href = '/?projectId={$_GET['projectId']}&page=issue'</script>";
     exit;
 }
 
 // 이슈 ID 가 없는 이슈인가?
 $issue = getIssueByIssueId($_GET['issueId']);
 if (empty($issue)) {
-    header("Location: /?projectId={$_GET['projectId']}&page=issue");
+    echo "<script>alert('없는 이슈입니다.');</script>";
+    echo "<script>window.location.href = '/?projectId={$_GET['projectId']}&page=issue'</script>";
     exit;
 }
 
 // URL 의 프로젝트 ID 와 이슈의 지정된 프로젝트 ID가 다른가?
 if ($_GET['projectId'] != $issue['issue_inclusion_project_id']) {
-    header("Location: /?projectId={$_GET['projectId']}&page=issue");
+    echo "<script>alert('잘못된 접근입니다.');</script>";
+    echo "<script>window.location.href = '/?projectId={$_GET['projectId']}&page=issue'</script>";
     exit;
 }
 
@@ -58,7 +61,8 @@ if (session_status() == PHP_SESSION_NONE)
 $isJoin = isUserJoinedProject($issue['issue_inclusion_project_id'], $_SESSION['sess']);
 
 if (!$isJoin) {
-    header("Location: /?projectId={$_GET['projectId']}&page=issue");
+    echo "<script>alert('권한이 없습니다.');</script>";
+    echo "<script>window.location.href = '/?projectId={$_GET['projectId']}&page=issue'</script>";
     exit;
 }
 
@@ -85,6 +89,7 @@ $comments = getCommentcontainsIssue($issue['issue_id']);
 <p>이슈 우선순위 : <?=$issue['issue_priority']?> 순위</p>
 <p>이슈 상태 : <?php echo ($issue['issue_status'] == 1 ? "해결됨" : "해결안됨");?></p>
 <?php echo "<a href='/?projectId={$_GET['projectId']}&page=issueEditor&issueId={$issue['issue_id']}'>이슈 수정하기</a><br>"; ?>
+<a href="" onclick="deleteIssue();">이슈 삭제하기</a>
 <h3>이슈 본문</h3>
 <hr>
 <div class="article">
@@ -130,7 +135,6 @@ $comments = getCommentcontainsIssue($issue['issue_id']);
     function postComment() {
         const issue_id = document.getElementById('hidden_issueId').value;
         const input = document.getElementById('writecomment').value;
-        console.log("asdfasdf");
 
         $.ajax(
             {
@@ -151,6 +155,36 @@ $comments = getCommentcontainsIssue($issue['issue_id']);
                 }
             }
         });
+    }
+
+    function deleteIssue() {
+        if (confirm('정말로 이 이슈를 삭제합니까? 이슈에 작성된 댓글또한 모두 삭제됩니다.')) {
+            const issue_id = document.getElementById('hidden_issueId').value;
+
+            $.ajax(
+                {
+                    type: "POST",
+                    url:"/db/issue/deleteIssue.php",
+                    data: {
+                        issueId: issue_id,
+                    },
+                    success: (code) => {
+                        switch (code) {
+                            case "success":
+                                const projectId = getParameterByName('projectId');
+                                alert('이슈가 삭제되었습니다.');
+                                window.location.href = 'http://localhost/?projectId=' + projectId + '&page=issue';
+                                break;
+                            case "access_denied":
+                                alert('권한이 없습니다.');
+                                break;
+                            default:
+                                console.log(code);
+                                alert('오류 발생');
+                        }
+                    }
+                });
+        }
     }
 
 </script>
