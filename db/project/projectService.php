@@ -288,3 +288,41 @@ function addUsertoProject($projectId, $userId) {
     }
 
 }
+
+function quitUserFromProject($projectId, $userId) {
+
+    // 존재하지 않는 프로젝트 ID 이면 false
+    if(!isProjectIdExist($projectId))
+        return false;
+
+    // 프로젝트에 참가하지 않은 유저라면 false
+    if(!isUserJoinedProject($projectId, $userId))
+        return false;
+
+    $pdo = getPDO();
+    $sql = "DELETE * FROM user_project_join WHERE project_id = : projectId ANDuser_id = :userID;";
+    $stmt = $pdo->prepare($sql);
+
+    try {
+        // 복구 지점 설정
+        $pdo->beginTransaction();
+
+        // 파라메터 바인딩
+        $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':projectId', $projectId, PDO::PARAM_INT);
+
+        // 데이터 삽입
+        $stmt->execute();
+
+        // 성공 시 변경점 저장 후 true 리턴
+        $pdo->commit();
+        return true;
+
+        // 작업 도중 예외 발생 시 복구 지점으로 롤백 후 false 반환
+    } catch (PDOException $e) {
+        $pdo->rollback();
+        return false;
+    }
+
+
+}

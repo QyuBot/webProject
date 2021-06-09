@@ -61,7 +61,7 @@ $projectList = getJoinorNotProjectList($_SESSION['sess']);
                     echo "프로젝트 ID : {$row}<br>";
                     echo "프로젝트 이름 : {$projectName}<br>";
                     echo "참가자 수 : {$projectNumofCollaborators}<br>";
-                    echo "<a href='/?projectId={$row}'>참가하기</a>";
+                    echo "<a href='' onclick='joinProject({$row}, \"{$projectName}\");'>참가하기</a>";
                     echo "</div>";
                 }
             }
@@ -113,6 +113,42 @@ $projectList = getJoinorNotProjectList($_SESSION['sess']);
         }
         else
             alert('프로젝트가 생성되지 않았습니다.');
+
+    }
+
+    function joinProject(projectId, projectName) {
+        if (confirm('정말 ' + projectName + ' 프로젝트에 참가하겠습니까?')) {
+
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/db/project/addMember.php",
+                    data: {
+                        projectId: projectId,
+                    },
+                    success: (code) => {
+                        console.log(code);
+                        switch(code) {
+                            case "no_args":
+                                alert("매개변수 오류");
+                                break;
+                            case "prject_not_exist":
+                                alert("이미 해당 프로젝트에 참가 중 입니다.");
+                                break;
+                            case "already_join":
+                                alert("존재하지 않는 프로젝트 입니다.");
+                                break;
+                            case "success":
+                                alert("프로젝트에 참가하였습니다.");
+                                location.reload();
+                                break;
+                            default:
+                                alert("예외 발생");
+                        }
+                    }
+                }
+            )
+        }
 
     }
 
