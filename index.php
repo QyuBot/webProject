@@ -163,7 +163,7 @@
         <h2>Bucket</h2>
     </header>
 
-    <img src ="assets/image/bucket.svg">
+    <img class="head_img" src ="assets/image/bucket.svg">
 
     <?php
     // GET 으로 선택한 프로젝트가 없을 경우 -> 프로젝트 목록 표시
