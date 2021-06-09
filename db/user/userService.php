@@ -103,10 +103,10 @@ function addUser($id, $pw, $nickname, $email, $eDomain) {
 
         // 파라메터 바인딩
         $stmt->bindValue(':id', $id, PDO::PARAM_STR);
-        $stmt->bindValue(':pw', $id, PDO::PARAM_STR);
-        $stmt->bindValue(':nickname', $id, PDO::PARAM_STR);
-        $stmt->bindValue(':email', $id, PDO::PARAM_STR);
-        $stmt->bindValue(':eDomain', $id, PDO::PARAM_STR);
+        $stmt->bindValue(':pw', $pw, PDO::PARAM_STR);
+        $stmt->bindValue(':nickname', $nickname, PDO::PARAM_STR);
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->bindValue(':eDomain', $eDomain, PDO::PARAM_STR);
 
         // 데이터 삽입
         $stmt->execute();
