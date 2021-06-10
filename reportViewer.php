@@ -31,14 +31,14 @@ if(!defined('DirectAccessCheck')){
     exit;
 }
 
-// 리포트 ID 매개변수가 없는가?
+// 보고서 ID 매개변수가 없는가?
 if (!isset($_GET['reportId'])) {
     echo "<script>alert('잘못된 접근입니다.');</script>";
     echo "<script>window.location.href = '/?projectId={$_GET['projectId']}&page=report'</script>";
     exit;
 }
 
-// 리포트 ID 가 없는 리포트인가?
+// 보고서 ID 가 없는 리포트인가?
 $report = getReportByReportId($_GET['reportId']);
 if (empty($report)) {
     echo "<script>alert('없는 리포트입니다.');</script>";
@@ -46,14 +46,14 @@ if (empty($report)) {
     exit;
 }
 
-// URL 의 프로젝트 ID 와 리포트의 지정된 프로젝트 ID가 다른가?
+// URL 의 프로젝트 ID 와 보고서의 지정된 프로젝트 ID가 다른가?
 if ($_GET['projectId'] != $report['report_inclusion_project_id']) {
     echo "<script>alert('잘못된 접근입니다.');</script>";
     echo "<script>window.location.href = '/?projectId={$_GET['projectId']}&page=report'</script>";
     exit;
 }
 
-// 접속중인 유저가 해당 이슈를 볼 권한이 있는가? (프로젝트에 소속되어 있는가?)
+// 접속중인 유저가 해당 보고서를 볼 권한이 있는가? (프로젝트에 소속되어 있는가?)
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 $isJoin = isUserJoinedProject($report['report_inclusion_project_id'], $_SESSION['sess']);
@@ -92,7 +92,7 @@ if (!empty($creator))
 <script type="text/javascript">
 
     function deleteReport() {
-        if (confirm('정말로 이 리포트를 삭제합니까?')) {
+        if (confirm('정말로 이 보고서를 삭제합니까?')) {
             const reportId = document.getElementById('hidden_reportId').value;
 
             $.ajax(
@@ -106,7 +106,7 @@ if (!empty($creator))
                         switch (code) {
                             case "success":
                                 const projectId = getParameterByName('projectId');
-                                alert('리포트가 삭제되었습니다.');
+                                alert('보고서가 삭제되었습니다.');
                                 window.location.href = 'http://localhost/?projectId=' + projectId + '&page=report';
                                 break;
                             case "access_denied":

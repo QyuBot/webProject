@@ -28,15 +28,17 @@ button {
         <hr>
         
         <?php
-
         require_once $_SERVER["DOCUMENT_ROOT"] . "/db/report/reportService.php";
+
         $reports = getReportListinProject($_GET['projectId']);
+
         if (count($reports) == 0)
-            echo "작성한 리포트가 없어요.";
+            echo "작성한 보고서가 없어요.";
+
         else {
             foreach ($reports as $report) {
                 echo "<div class='issue'>";
-                echo "이슈 제목 : {$report['report_title']}";
+                echo "보고서 제목 : {$report['report_title']}";
                 echo "<button onclick=location.href='/?projectId={$_GET['projectId']}&page=reportViewer&reportId={$report['report_id']}'>조회</button><br>";
                 echo "</div><br>";
             }

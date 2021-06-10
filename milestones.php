@@ -20,7 +20,10 @@ if(!defined('DirectAccessCheck')){
     <?php
 
     require_once $_SERVER["DOCUMENT_ROOT"] . "/db/milestone/milestoneService.php";
+
     $milestones = getMilestoneListinProject($_GET['projectId']);
+
+
     if (count($milestones) == 0)
         echo "이정표(마일스톤)가 없네요. 길을 잃었어요";
     else {

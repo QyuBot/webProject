@@ -4,7 +4,7 @@
 
 
 <?php
-    // GET page 값에 따라 별도의 페이지 출력
+    // GET page 값에 따라 nav바(사이드바) active 세팅 및 별도의 페이지 출력
     if (isset($_GET['page'])) {
         switch ($_GET['page']) {
             case "milestone":
@@ -43,10 +43,6 @@
                 echo "<script type='text/javascript'>activeNav(6);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/freeboard.php";
                 break;
-            /*case "setting":
-                echo "<script type='text/javascript'>activeNav(7);</script>";
-                require_once $_SERVER["DOCUMENT_ROOT"] . "/projectSettings.php";
-                break; -> project */
             default:
                 echo "<script type='text/javascript'>activeNav(1);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/dashboard.php";

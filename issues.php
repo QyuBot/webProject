@@ -1,3 +1,11 @@
+<?php
+if(!defined('DirectAccessCheck')){
+    header('HTTP/1.0 404 Not Found', true, 404);
+    exit;
+}
+
+?>
+
 <style>
     .issue {
         border: 1px solid black;
@@ -15,15 +23,8 @@
         color: #fff;
     }
 </style>
-<?php
-if(!defined('DirectAccessCheck')){
-    header('HTTP/1.0 404 Not Found', true, 404);
-    exit;
-}
-
-?>
 <main>
-    <h3>ISSUE<button type="button" style = "float:right; margin-left: 20px;" onclick="location.href='/?projectId=<?=$_GET['projectId']?>&page=issueEditor';">추가</button></h3>
+    <h2>ISSUE<button type="button" style = "float:right; margin-left: 20px;" onclick="location.href='/?projectId=<?=$_GET['projectId']?>&page=issueEditor';">추가</button></h2>
     <hr>
     <?php
 
@@ -43,8 +44,5 @@ if(!defined('DirectAccessCheck')){
     }
 
     ?>
-
-    <br><br>
-    <h3>이슈 목록</h3>
 </main>
 <hr>

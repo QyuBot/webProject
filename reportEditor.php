@@ -93,6 +93,7 @@ if(!defined('DirectAccessCheck')){
     function sendFile($summernote, file) {
         var formData = new FormData();
         formData.append("file", file);
+
         $.ajax({
             url: '/db/saveImage.php',
             data: formData,
@@ -101,6 +102,7 @@ if(!defined('DirectAccessCheck')){
             processData: false,
             type: 'POST',
             success: function (data) {
+
                 if (data === -1){
                     alert('용량이 너무크거나 이미지 파일이 아닙니다.');
                     return;
@@ -115,6 +117,7 @@ if(!defined('DirectAccessCheck')){
                     }
                     $("#imgUrl").val(imgUrl+data);
                 }
+
             }
         });
 
@@ -122,14 +125,18 @@ if(!defined('DirectAccessCheck')){
 
     // 글쓰기 버튼 클릭 시
     function writeButton() {
+
         if (isEditPost)
             postEditReport();
+
         else
             postNewReport();
     }
 
     function postNewReport() {
+
         const formData = $("#editorForm").serialize();
+
         $.ajax(
             {
                 type: "POST",
@@ -154,8 +161,10 @@ if(!defined('DirectAccessCheck')){
     }
 
     function postEditReport() {
+
         const formData = $("#editorForm").serialize();
         const reportId = getParameterByName('reportId');
+
         $.ajax(
             {
                 type: "POST",

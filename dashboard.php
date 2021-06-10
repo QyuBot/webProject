@@ -46,7 +46,7 @@ $totalNumOfIssues = $numOfSolvedIssues + $numOfUnsolvedIssues;
         <h3>프로젝트 정보</h3>
         <div style="padding-top: 10px;">프로젝트 이름 : <?php echo($project['project_name']); /* $project 는 index.php 에서 선언되어 내려옴 */  ?></div>
         <div>구성원 수 : <?php echo count($collaborators) ?></div>
-        <div>이슈 갯수 : <?=$totalNumOfIssues?> (<?php if($totalNumOfIssues != 0) echo "미해결:{$numOfUnsolvedIssues} / 해결:{$numOfSolvedIssues}"; ?>)</div>
+        <div>이슈 갯수 : <?=$totalNumOfIssues?> <?php if($totalNumOfIssues != 0) echo "(미해결:{$numOfUnsolvedIssues} / 해결:{$numOfSolvedIssues})"; ?></div>
         <div>보고서 수 : <?=$numOfReports?></div>
 
 

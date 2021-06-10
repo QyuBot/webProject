@@ -48,21 +48,25 @@ if(!defined('DirectAccessCheck')){
                     <td></td>
                 </tr>
                 <?php
+
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/db/user/userService.php";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/db/project/projectService.php";
 
                 $collaborators = getAllProjectCollaborators($project['project_id']);
 
                 foreach ($collaborators as $collaborator) {
+
                     $user = getUserByUserId($collaborator['user_id']);
                     $issues = getAllWritedIssuesInProject($project['project_id'], $user['user_id']);
                     $comments = getAllWritedCommentsInProject($project['project_id'], $user['user_id']);
 
                     echo "<tr>";
                     echo "<td>{$user['user_nickname']}";
+
                     // 지금 행이 프로젝트의 관리자인 경우
                     if ($user['user_id'] == $project['project_admin_id'])
                         echo "[관리자] ";
+
                     // 지금 행이 내 정보인 경우
                     if ($user['user_id'] == $nowLoginUser['user_id'])
                         echo "(나) ";
@@ -73,6 +77,8 @@ if(!defined('DirectAccessCheck')){
                     // 현재 접속한 유저가 프로젝트 관리자 이면서, 지금 행이 내가 아닐 경우 -> 추방하기 버튼 출력
                     if ($project['project_admin_id'] == $_SESSION['sess'] && $nowLoginUser['user_id'] != $user['user_id'])
                         echo "<td><a href='' onclick='kickUser(".$user['user_id'].", ".$user['user_nickname'].");'>추방하기</a></td>";
+
+                    // 아니면 빈칸 출력
                     else
                         echo "<td></td>";
                     echo "</tr>";
