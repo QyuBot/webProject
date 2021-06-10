@@ -137,26 +137,19 @@ function getProjectByProjectId($projectId): array
 
 }
 
-// 프로젝트에 포함된 이슈 리스트 구하기
-function getProjectIssuesList($projectId) {
+// 프로젝트의 모든 이슈 리스트 가져오기
+function getIssueListinProject($projectId): array
+{
 
     $pdo = getPDO();
-    $sql = "SELECT issue_id FROM issues WHERE issue_inclusion_project_id = :projectId;";
+    $sql = "SELECT * FROM issues WHERE issue_inclusion_project_id = :projectId;";
     $stmt = $pdo->prepare($sql);
 
-    $stmt->bindParam(':projectId', $projectId, PDO::PARAM_INT);
+    $stmt->bindValue(':projectId', $projectId, PDO::PARAM_INT);
 
     $stmt->execute();
-    $result = $stmt->fetchAll();
-    if (count($result) == 0)
-        return array();
-    else {
-        $arr = array();
-        foreach($result as $row) {
-            array_push($arr, $row['issue_id']);
-        }
-        return $arr;
-    }
+
+    return $stmt->fetchAll();
 }
 
 // 프로젝트 참가 인원 구하기
@@ -292,15 +285,20 @@ function addUsertoProject($projectId, $userId) {
 function quitUserFromProject($projectId, $userId) {
 
     // 존재하지 않는 프로젝트 ID 이면 false
-    if(!isProjectIdExist($projectId))
+    if (!isProjectIdExist($projectId))
         return false;
 
     // 프로젝트에 참가하지 않은 유저라면 false
-    if(!isUserJoinedProject($projectId, $userId))
+    if (!isUserJoinedProject($projectId, $userId))
+        return false;
+
+    // 프로젝트 관리자라면
+    $project = getProjectByProjectId($projectId);
+    if ($project['project_admin_id'] == $userId)
         return false;
 
     $pdo = getPDO();
-    $sql = "DELETE * FROM user_project_join WHERE project_id = : projectId ANDuser_id = :userID;";
+    $sql = "DELETE FROM user_project_join WHERE project_id = :projectId AND user_id = :userId;";
     $stmt = $pdo->prepare($sql);
 
     try {
@@ -323,6 +321,90 @@ function quitUserFromProject($projectId, $userId) {
         $pdo->rollback();
         return false;
     }
+
+
+}
+
+// 프로젝트 삭제
+function deleteProject($projectId) {
+
+    $pdo = getPDO();
+    $phase = 0;
+
+    try {
+
+        $pdo->beginTransaction();
+
+        // 댓글 전부 삭제
+        $phase = -1;
+        $issues = getIssueListinProject($projectId);
+
+        foreach ($issues as $issue) {
+            $sql = "DELETE FROM comments WHERE comment_inclusion_issue_id = :issueId";
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':issueId', $issue['issue_id'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+
+        // 이슈 전부 삭제
+        $phase = -2;
+
+        $sql = "DELETE FROM issues WHERE issue_inclusion_project_id = :projectId";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':projectId', $projectId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // 마일스톤 전부 삭제
+        $phase = -3;
+
+        $sql = "DELETE FROM milestones WHERE milestone_inclusion_project_id = :projectId";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':projectId', $projectId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // 보고서 전부 삭제
+        $phase = -4;
+
+        $sql = "DELETE FROM reports WHERE report_inclusion_project_id = :projectId";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':projectId', $projectId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // 프로젝트에 참가한 유저 전부 해제
+        $phase = -5;
+
+        $sql = "DELETE FROM reports WHERE report_inclusion_project_id = :projectId";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':projectId', $projectId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // 프로젝트에 참가한 유저 전부 해제
+        $phase = -6;
+
+        $sql = "DELETE FROM user_project_join WHERE project_id = :projectId";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':projectId', $projectId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // 프로젝트 삭제
+        $phase = -7;
+
+        $sql = "DELETE FROM projects WHERE project_id = :projectId";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':projectId', $projectId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $phase = 1;
+        $pdo->commit();
+
+        return $phase;
+        // 작업 도중 예외 발생 시 복구 지점으로 롤백 후 false 반환
+    } catch (PDOException $e) {
+        $pdo->rollback();
+        return $phase;
+    }
+
 
 
 }

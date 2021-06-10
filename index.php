@@ -37,6 +37,11 @@
     if ($loginUserNickname == null || $loginUserNickname == -1)
         echo "<script type='text/javascript'>window.location.href='/login.php';</script>";
 
+    if (session_status() == PHP_SESSION_NONE)
+        session_start();
+
+    $nowLoginUser = getUserByUserId($_SESSION['sess']);
+
     // 프로젝트가 선택되었다 = 클라이언트가 URL에 &projectId=? 를 포함된 상태로 접속하고, ? 가 존재하는 프로젝트의 ID 인 경우
     // 현재 선택된 프로젝트를 구해와서 존재하는 프로젝트인 경우 플래그를 설정하는 로직
     $isProjectSelected = false;

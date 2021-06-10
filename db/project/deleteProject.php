@@ -2,8 +2,8 @@
 require_once $_SERVER["DOCUMENT_ROOT"] . "/db/project/projectService.php";
 
 // 비어있는 매개변수 없는지 확인
-if (!isset($_POST['projectId'])) {
-    echo "no_args";
+if (!isset($_POST['projectId']) || !isset($_POST['prom'])) {
+    echo "missing_arg(s)";
     exit;
 }
 
@@ -25,14 +25,20 @@ if (!isUserJoinedProject($_POST['projectId'], $userId)) {
     exit;
 }
 
-// 프로젝트 관리자인 경우
-if ($project['project_admin_id'] == $userId) {
-    echo "is_admin";
+// 프로젝트 관리자가 아닌 경우
+if (!$project['project_admin_id'] == $userId) {
+    echo "access_denied";
     exit;
 }
 
-$result = quitUserFromProject($_POST['projectId'], $userId);
-if ($result)
+// 프로젝트 이름을 잘못 입력한 경우
+if ($project['project_name'] != $_POST['prom']) {
+    echo "missing_arg(s)";
+    exit;
+}
+
+$result = deleteProject($_POST['projectId']);
+if ($result == 1)
     echo "success";
 else
-    echo "fail";
+    echo "fail : {$result}";
