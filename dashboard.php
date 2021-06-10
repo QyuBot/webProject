@@ -26,12 +26,17 @@ if(!defined('DirectAccessCheck')){
     }
 </style>
 <?php
-if (session_status() == PHP_SESSION_NONE)
-    session_start();
+require_once $_SERVER["DOCUMENT_ROOT"] . "/db/user/userService.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/db/project/projectService.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/db/issue/issueService.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/db/report/reportService.php";
 
-// 현재 접속한 유저가 프로젝트 관리자 일 경우 -> 삭제하기 버튼 출력
-if ($project['project_admin_id'] == $_SESSION['sess'])
-    echo "<a href='' onclick='deleteProject();'>프로젝트 삭제하기</a>";
+
+$collaborators = getAllProjectCollaborators($project['project_id']);
+$numOfSolvedIssues = count(getIssueListinProjectAndSolved($project['project_id']));
+$numOfUnsolvedIssues = count(getIssueListinProjectAndNotSolved($project['project_id']));
+$numOfReports = count(getReportListinProject($project['project_id']));
+$totalNumOfIssues = $numOfSolvedIssues + $numOfUnsolvedIssues;
 
 ?>
 <main>
@@ -40,8 +45,22 @@ if ($project['project_admin_id'] == $_SESSION['sess'])
     <div class="setting-projectbox">
         <h3>프로젝트 정보</h3>
         <div style="padding-top: 10px;">프로젝트 이름 : <?php echo($project['project_name']); /* $project 는 index.php 에서 선언되어 내려옴 */  ?></div>
-        <div>구성원 수 : </div>
-        <div>시작 날짜 : </div>
+        <div>구성원 수 : <?php echo count($collaborators) ?></div>
+        <div>이슈 갯수 : <?=$totalNumOfIssues?> (<?php if($totalNumOfIssues != 0) echo "미해결:{$numOfUnsolvedIssues} / 해결:{$numOfSolvedIssues}"; ?>)</div>
+        <div>보고서 수 : <?=$numOfReports?></div>
+
 
     </div>
+    <?php
+
+    // 현재 접속한 유저가 프로젝트 관리자 일 경우 -> 삭제하기 버튼 출력
+    if ($project['project_admin_id'] == $nowLoginUser['user_id']) {
+        echo "<div>";
+        echo "<h1>Danger Zone</h1>";
+        echo "<hr>";
+        echo "<a href='' onclick='deleteProject();'>프로젝트 삭제하기</a>";
+        echo "</div>";
+    }
+
+    ?>
 </main>
