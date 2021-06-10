@@ -103,7 +103,7 @@ function editReport($reportId, $title, $contents) {
 
     // 중복 이름 방지
     if ($report['report_title'] != $title && isReportTitleExistinContainsProject($reportId, $title))
-        return "dupname";
+        return false;
 
     $pdo = getPDO();
     $sql = "UPDATE reports SET report_title = :title, report_article = :content;";
@@ -122,12 +122,12 @@ function editReport($reportId, $title, $contents) {
 
         // 성공 시 변경점 저장 후 true 리턴
         $pdo->commit();
-        return "success";
+        return true;
 
         // 작업 도중 예외 발생 시 복구 지점으로 롤백 후 false 반환
     } catch (PDOException $e) {
         $pdo->rollback();
-        return $e;
+        return false;
     }
 }
 

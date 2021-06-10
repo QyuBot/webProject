@@ -31,5 +31,7 @@ if (!isUserJoinedProject($projectId, $creatorId)) {
 }
 
 $result = editReport($_POST['reportId'], $_POST['title'], $_POST['contents']);
-
-echo $result;
+if ($result)
+    echo "success";
+else
+    echo "fail";

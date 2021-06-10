@@ -33,10 +33,12 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/db/report/reportService.php";
 
 
 $collaborators = getAllProjectCollaborators($project['project_id']);
+
 $numOfSolvedIssues = count(getIssueListinProjectAndSolved($project['project_id']));
 $numOfUnsolvedIssues = count(getIssueListinProjectAndNotSolved($project['project_id']));
-$numOfReports = count(getReportListinProject($project['project_id']));
 $totalNumOfIssues = $numOfSolvedIssues + $numOfUnsolvedIssues;
+
+$numOfReports = count(getReportListinProject($project['project_id']));
 
 ?>
 <main>

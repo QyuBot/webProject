@@ -60,12 +60,7 @@ if (!(0 <= $status && $status <= 1)) {
 }
 
 $result = editIssue($_POST['issueId'], $_POST['title'], $_POST['contents'], $priority, $status, $milestoneId);
-
-echo $result;
-
-
-//
-//if ($result)
-//    echo "success";
-//else
-//    echo "fail";
+if ($result)
+    echo "success";
+else
+    echo "fail";
