@@ -194,3 +194,35 @@ function doLogin($loginId, $password) {
         return false;
 }
 
+// 사용자가 프로젝트에 작성한 이슈 전부 구하기
+function getAllWritedIssuesInProject($projectId, $userId): array
+{
+
+    $pdo = getPDO();
+    $sql = "SELECT * FROM issues WHERE issue_creator_id = :userId AND issue_inclusion_project_id = :projectId";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+    $stmt->bindValue(':projectId', $projectId, PDO::PARAM_INT);
+
+    $stmt->execute();
+    return $stmt->fetchAll();
+}
+
+// 사용자가 프로젝트에 작성한 댓글 전부 구하기
+function getAllWritedCommentsInProject($projectId, $userId): array
+{
+
+    $pdo = getPDO();
+    $sql = "SELECT * FROM comments 
+            INNER JOIN issues
+                ON issues.issue_inclusion_project_id = :projectId
+            WHERE comment_creator_id = :userId AND comment_inclusion_issue_id = issues.issue_id";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
+    $stmt->bindValue(':projectId', $projectId, PDO::PARAM_INT);
+
+    $stmt->execute();
+    return $stmt->fetchAll();
+}

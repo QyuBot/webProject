@@ -44,8 +44,29 @@ if(!defined('DirectAccessCheck')){
     <hr>
     <article id="managing-project">
         <div align="center"><h1> 프로젝트 사용자 정보</h1></div><hr>
+            <table border="1">
+                <tr>
+                    <td>사용자 닉네임</td>
+                    <td>작성한 이슈 수</td>
+                    <td>작성한 댓글 수</td>
+                </tr>
+                <?php
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/db/user/userService.php";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/db/project/projectService.php";
 
-
+                $collaborators = getAllProjectCollaborators($project['project_id']);
+                foreach ($collaborators as $collaborator) {
+                    $user = getUserByUserId($collaborator['user_id']);
+                    $issues = getAllWritedIssuesInProject($project['project_id'], $user['user_id']);
+                    $comments = getAllWritedCommentsInProject($project['project_id'], $user['user_id']);
+                    echo "<tr>";
+                    echo "<td>{$user['user_nickname']}</td>";
+                    echo "<td>".count($issues)." 개</td>";
+                    echo "<td>".count($comments)." 개</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </table>
     </article>
     <div class="btnList" style="padding-top: 50px;">
     </div>

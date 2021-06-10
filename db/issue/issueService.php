@@ -67,7 +67,7 @@ function getIssueByIssueId($issueId): array
 // 프로젝트에 이미 존재하는 이슈 제목인지 확인하는 함수
 function isIssueNameExist($projectId, $title) {
 
-    $issues = getIssueListinProject($projectId);
+    $issues = getAllIssuesInProject($projectId);
 
     foreach ($issues as $issue)
         if ($issue['issue_title'] == $title)

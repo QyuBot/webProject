@@ -25,27 +25,18 @@ if(!defined('DirectAccessCheck')){
         margin-left: 15px;
     }
 </style>
+<?php
+
+
+?>
 <main>
-    <h3>프로젝트 제목 : <?php echo($project['project_name']); /* $project 는 index.php 에서 선언되어 내려옴 */  ?></h3>
+    <h3>대쉬보드</h3>
     <hr>
     <div class="setting-projectbox">
         <h3>프로젝트 정보</h3>
-        <div style="padding-top: 10px;">프로젝트 이름 : </div>
+        <div style="padding-top: 10px;">프로젝트 이름 : <?php echo($project['project_name']); /* $project 는 index.php 에서 선언되어 내려옴 */  ?></div>
         <div>구성원 수 : </div>
         <div>시작 날짜 : </div>
 
-    </div>
-    <div class="setting-memberbox">
-        <h3>구성원 권한</h3>
-        <div style="padding-top: 20px;">홍길동(DB사용)
-            <span class="setting-membernamebox">
-                    <select id="setting-mname">
-                        <option value="01">방장</option>
-                        <option value="02">매니저</option>
-                        <option value="03">조원</option>
-                    </select>
-                </span>
-            </div>
-        </div>
     </div>
 </main>

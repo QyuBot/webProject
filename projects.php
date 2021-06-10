@@ -35,7 +35,7 @@ $projectList = getJoinorNotProjectList($_SESSION['sess']);
             else {
                 foreach($projectList['join'] as $row) {
                     $projectName = getProjectNameByProjectId($row);
-                    $projectNumofCollaborators = count(getNumberofProjectCollaborators($row));
+                    $projectNumofCollaborators = count(getAllProjectCollaborators($row));
                     echo "<div class='project'>";
                     echo "프로젝트 ID : {$row}<br>";
                     echo "프로젝트 이름 : {$projectName}<br>";
@@ -56,7 +56,7 @@ $projectList = getJoinorNotProjectList($_SESSION['sess']);
             else {
                 foreach($projectList['notJoin'] as $row) {
                     $projectName = getProjectNameByProjectId($row);
-                    $projectNumofCollaborators = count(getNumberofProjectCollaborators($row));
+                    $projectNumofCollaborators = count(getAllProjectCollaborators($row));
                     echo "<div class='project'>";
                     echo "프로젝트 ID : {$row}<br>";
                     echo "프로젝트 이름 : {$projectName}<br>";

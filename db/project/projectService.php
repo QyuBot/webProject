@@ -138,7 +138,7 @@ function getProjectByProjectId($projectId): array
 }
 
 // 프로젝트의 모든 이슈 리스트 가져오기
-function getIssueListinProject($projectId): array
+function getAllIssuesInProject($projectId): array
 {
 
     $pdo = getPDO();
@@ -153,10 +153,10 @@ function getIssueListinProject($projectId): array
 }
 
 // 프로젝트 참가 인원 구하기
-function getNumberofProjectCollaborators($projectId) {
+function getAllProjectCollaborators($projectId) {
 
     $pdo = getPDO();
-    $sqlProjectList = "SELECT project_id FROM user_project_join WHERE project_id = :projectId;";
+    $sqlProjectList = "SELECT * FROM user_project_join WHERE project_id = :projectId;";
     $stmt = $pdo->prepare($sqlProjectList);
 
     $stmt->bindParam(':projectId', $projectId, PDO::PARAM_INT);
@@ -337,7 +337,7 @@ function deleteProject($projectId) {
 
         // 댓글 전부 삭제
         $phase = -1;
-        $issues = getIssueListinProject($projectId);
+        $issues = getAllIssuesInProject($projectId);
 
         foreach ($issues as $issue) {
             $sql = "DELETE FROM comments WHERE comment_inclusion_issue_id = :issueId";
