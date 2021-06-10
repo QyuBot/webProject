@@ -49,8 +49,8 @@ function isReportTitleExist($projectId, $title) {
 // 리포트가 포함된 프로젝트에 이미 존재하는 리포트 제목인지 확인하는 함수
 function isReportTitleExistinContainsProject($reportId, $title) {
 
-    $report = getReportListinProject($reportId);
-    $projectId = $report['issue_inclusion_project_id'];
+    $report = getReportByReportId($reportId);
+    $projectId = $report['report_inclusion_project_id'];
 
     return isReportTitleExist($projectId, $title);
 }
