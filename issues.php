@@ -2,6 +2,18 @@
     .issue {
         border: 1px solid black;
     }
+    main {
+        line-height: 35px;
+    }
+    button {
+        font-size: 16px;
+        width: 80px;
+        text-align: center;
+        height: 46px;
+        border-radius:10px;
+        border-color: #917b56;
+        color: #fff;
+    }
 </style>
 <?php
 if(!defined('DirectAccessCheck')){
@@ -10,11 +22,8 @@ if(!defined('DirectAccessCheck')){
 }
 
 ?>
-<br>
-<a href="/?projectId=<?=$_GET['projectId']?>&page=issueEditor">이슈 새로 작성하러가기</a>
-<br>
 <main>
-    <h3>ISSUE</h3>
+    <h3>ISSUE<button type="button" style = "float:right; margin-left: 20px;" onclick="location.href='/?projectId=<?=$_GET['projectId']?>&page=issueEditor';">추가</button></h3>
     <hr>
     <?php
 
@@ -24,17 +33,18 @@ if(!defined('DirectAccessCheck')){
         echo "이정표(마일스톤)가 없네요. 길을 잃었어요";
     else {
         foreach ($issues as $issue) {
-            echo "<div class='issue'>";
+            echo "<div class='issue' style='border: none'>";
             echo "이슈 제목 : {$issue['issue_title']}<br>";
             echo "상태 : ".($issue['issue_status'] == 1 ? "해결됨" : "해결안됨")."<br>";
-            echo "우선순위 : {$issue['issue_priority']} 순위<br>";
-            echo "<a href='/?projectId={$_GET['projectId']}&page=issueViewer&issueId={$issue['issue_id']}'>이슈 조회하기</a><br>";
-            echo "</div>";
+            echo "우선순위 : {$issue['issue_priority']} 순위<br>"; 
+            echo "<button style ='width:100px; margin-top:20px;' onclick= location.href='/?projectId={$_GET['projectId']}&page=issueViewer&issueId={$issue['issue_id']}';>이슈조회</button><br>";
+            echo "</div><br>";
         }
     }
 
     ?>
-    <br>
+
+    <br><br>
+    <h3>이슈 목록</h3>
 </main>
-<h1>이슈 목록</h1>
 <hr>

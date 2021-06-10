@@ -15,10 +15,18 @@
         height: 140px;
     }
 
-
+    button {
+        font-size: 16px;
+        width: 100px;
+        height: 45px;
+        border-radius: .5rem;
+        border-color: #917b56;
+        color: #fff;
+    }
 </style>
 
 <br>
+<main>
 <h3>이슈 조회</h3>
 <hr>
 <?php
@@ -88,8 +96,10 @@ $comments = getCommentcontainsIssue($issue['issue_id']);
 <p>이슈 작성자 닉네임 : <?=$creatorNickname?></p>
 <p>이슈 우선순위 : <?=$issue['issue_priority']?> 순위</p>
 <p>이슈 상태 : <?php echo ($issue['issue_status'] == 1 ? "해결됨" : "해결안됨");?></p>
-<?php echo "<a href='/?projectId={$_GET['projectId']}&page=issueEditor&issueId={$issue['issue_id']}'>이슈 수정하기</a><br>"; ?>
-<a href="" onclick="deleteIssue();">이슈 삭제하기</a>
+<?php echo "<button style ='width:100px;' onclick= location.href='/?projectId={$_GET['projectId']}&page=issueEditor&issueId={$issue['issue_id']}'>이슈수정</button>"; ?>
+
+<button onclick="deleteIssue();" style="margin-left: 10px;">이슈삭제</button>
+<br><br><hr><br>
 <h3>이슈 본문</h3>
 <hr>
 <div class="article">
@@ -186,5 +196,5 @@ $comments = getCommentcontainsIssue($issue['issue_id']);
                 });
         }
     }
-
 </script>
+</main>

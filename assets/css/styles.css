@@ -7,7 +7,7 @@
 
     /* Colores */
     --white-color: #fff;
-    --bg-color: #C9BA9B;
+    --bg-color: #b0a284;
     --sub-color: #FFD6AA;
     --first-color: #917b56;
 
@@ -100,7 +100,7 @@ a {
     padding: .75rem;
     color: var(--white-color);
     border-radius: .5rem;
-    margin-bottom: .3rem;
+    margin-bottom: .2rem;
     transition: .3s;
     cursor: pointer;
 }
@@ -191,6 +191,7 @@ header{
 }
 
 main {
+    line-height: 2em;
     margin-left: 10px;
     margin-top: 40px;
     margin-right: 20px;

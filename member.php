@@ -6,7 +6,6 @@ if(!defined('DirectAccessCheck')){
 ?>
 
 <style type="text/css">
-
     .user_ID1{
         padding-left:20px;
     }
@@ -14,10 +13,18 @@ if(!defined('DirectAccessCheck')){
     .user_ID{
         padding-left: 60px;
     }
-
+    button {
+        font-size: 16px;
+        width: 100px;
+        text-align: center;
+        height: 46px;
+        border-radius:10px;
+        border-color: #917b56;
+        color: #fff;
+    }
 </style>
 <main>
-    <h3>프로젝트 관리</h3>
+    <h3>멤버</h3>
     <hr>
     <article id="managing-project">
         <div align="center"><h1> 프로젝트 사용자 정보</h1></div><hr>

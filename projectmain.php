@@ -1,5 +1,4 @@
 
-
 <?php $url = "/?projectId={$_GET['projectId']}"; ?>
 
 
@@ -44,10 +43,10 @@
                 echo "<script type='text/javascript'>activeNav(6);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/freeboard.php";
                 break;
-            case "setting":
+            /*case "setting":
                 echo "<script type='text/javascript'>activeNav(7);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/projectSettings.php";
-                break;
+                break; -> project */
             default:
                 echo "<script type='text/javascript'>activeNav(1);</script>";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/dashboard.php";

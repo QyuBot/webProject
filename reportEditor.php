@@ -12,6 +12,7 @@ if(!defined('DirectAccessCheck')){
 }
 ?>
 
+<main>
 <h1 id="pageTitle">리포트 생성하기</h1>
 <br>
 
@@ -37,7 +38,7 @@ if(!defined('DirectAccessCheck')){
         <button type="button" id="btn-write" class="btn contact-btn" onclick="writeButton();">WRITE</button>
     </form>
 </div>
-
+</main>
 <script type="text/javascript">
 
     var isEditPost = false;

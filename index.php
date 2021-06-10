@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>화이트버킷 - 메인</title>
+    <title>Bucket</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- CSS -->
-    <link rel="stylesheet" href="assets/css/styles.css?after">
+    <link rel="stylesheet" href="assets/css/styles.css">
     <!-- jQuery 임포트-->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <!-- 아래 4줄의 코드는 Bootstrap 임포트 코드 입니다. -->
@@ -17,7 +17,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <style>
 
-    </style>
+    /*2021-06-09 추가 - 마우스 올렸을 때 아이콘 이름 제거*/
+    ion-icon {
+       pointer-events: none;
+   }
+</style>
 </head>
 <header-script>
     <!-- 이곳의 내용은 여러 페이지에서 공용으로 사용합니다. -->
@@ -73,7 +77,7 @@
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
+        results = regex.exec(location.search);
         return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
@@ -90,11 +94,13 @@
         <nav class="nav">
             <div>
                 <div class="nav__brand">
-                    <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+                    <span class="nav__toggle" id="nav-toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                    </span>
                     <a href="/" class="nav__logo"><?=$loginUserNickname?> 님</a>
                 </div>
                 <div class="nav__list">
-                    <a href="/" id='nav0' class="nav__link">
+                    <a href="/" id='nav0' class="nav__link" title='프로젝트 목록'>
                         <ion-icon name="home-outline" class="nav__icon"></ion-icon>
                         <span class="nav_name">프로젝트 목록</span>
                     </a>
@@ -103,79 +109,79 @@
 
                     // 프로젝트가 잘 선택되어 있으면
                     if ($isProjectSelected) {
-                        echo "<a href='{$url}' id='nav1' class='nav__link'>
-                            <ion-icon name='folder-outline' class='nav__icon'></ion-icon>
-                            <span class='nav_name'>대쉬보드</span>
-                            </a>";
+                        echo "<a href='{$url}' id='nav1' class='nav__link' title='프로젝트 정보'>
+                        <ion-icon name='folder-outline'class='nav__icon'></ion-icon>
+                        <span class='nav_name' >프로젝트 정보</span>
+                        </a>";
 
-                        echo "<a href='{$url}&page=milestone' id='nav2' class='nav__link'>
-                            <ion-icon name='albums-outline' class='nav__icon'></ion-icon>
-                            <span class='nav_name'>이정표</span>
-                            </a>";
+                        echo "<a href='{$url}&page=milestone' id='nav2' class='nav__link' title='이정표'>
+                        <ion-icon name='albums-outline' class='nav__icon'></ion-icon>
+                        <span class='nav_name'>이정표</span>
+                        </a>";
 
-                        echo "<a href='{$url}&page=issue' id='nav3' class='nav__link'>
-                            <ion-icon name='alert-outline' class='nav__icon'></ion-icon>
-                            <span class='nav_name'>목표</span>
-                            </a>";
+                        echo "<a href='{$url}&page=issue' id='nav3' class='nav__link' title='목표'>
+                        <ion-icon name='alert-outline' class='nav__icon'></ion-icon>
+                        <span class='nav_name'>목표</span>
+                        </a>";
 
-                        echo "<a href='{$url}&page=member' id='nav4' class='nav__link'>
-                            <ion-icon name='people-outline' class='nav__icon'></ion-icon>
-                            <span class='nav_name'>프로젝트 맴버</span>
-                            </a>";
+                        echo "<a href='{$url}&page=member' id='nav4' class='nav__link' title='프로젝트 멤버'>
+                        <ion-icon name='people-outline' class='nav__icon'></ion-icon>
+                        <span class='nav_name'>프로젝트 맴버</span>
+                        </a>";
 
-                        echo "<a href= '{$url}&page=report' id='nav5' class='nav__link'>
-                            <ion-icon name='document-text-outline' class='nav__icon'></ion-icon>
-                            <span class='nav_name'>보고서</span>
-                            </a>";
+                        echo "<a href= '{$url}&page=report' id='nav5' class='nav__link' title='보고서'>
+                        <ion-icon name='document-text-outline' class='nav__icon'></ion-icon>
+                        <span class='nav_name'>보고서</span>
+                        </a>";
 
-                        echo "<a href= '{$url}&page=freeboard' id='nav6' class='nav__link'>
-                            <ion-icon name='chatbubbles-outline' class='nav__icon'></ion-icon>
-                            <span class='nav_name'>자유게시판</span>
-                            </a>";
+                        echo "<a href= '{$url}&page=freeboard' id='nav6' class='nav__link' title='자유게시판'>
+                        <ion-icon name='chatbubbles-outline' class='nav__icon'></ion-icon>
+                        <span class='nav_name'>자유게시판</span>
+                        </a>";
 
-                        echo "<a href='{$url}&page=setting' id='nav7' class='nav__link'>
+                        /*echo "<a href='{$url}&page=setting' id='nav7' class='nav__link'>
                             <ion-icon name='settings-outline' class='nav__icon'></ion-icon>
                             <span class='nav_name'>프로젝트 설정</span>
-                            </a>";
+                            </a>";  2021-06-09 setting -> project */
 
-                    }
-                    ?>
+                        }
+                        ?>
 
-                    <a href="/db/user/logoutUser.php" class="nav__link">
-                        <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
-                        <span class="nav_name">로그아웃</span>
-                    </a>
-                    <a href="footer.html" class="nav__link">
-                        <ion-icon name="search" class="nav__icon"></ion-icon>
-                        <span class="nav_name">Footer</span>
-                    </a>
+                        <a href="/db/user/logoutUser.php" class="nav__link" title='로그아웃'>
+                            <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+                            <span class="nav_name">로그아웃</span>
+                        </a>
+                        <a href="footer.html" class="nav__link" title='기타'>
+                            <ion-icon name="search" class="nav__icon"></ion-icon>
+                            <span class="nav_name">Footer</span>
+                        </a>
 
-                </div>
-        </nav>
-    </div>
-    <!-- IONICONS -->
-    <script type="module" src="https://unpkg.com/ionicons@5.2.3/dist/ionicons/ionicons.esm.js"></script>
-    <!-- JS -->
-    <script src="assets/js/main.js"></script>
+                    </div>
+                </nav>
+            </div>
+            <!-- IONICONS -->
+            <script type="module" src="https://unpkg.com/ionicons@5.2.3/dist/ionicons/ionicons.esm.js"></script>
+            <!-- JS -->
+            <script src="assets/js/main.js"></script>
 
-    <!-- Navbar End -->
-    <header>
-        <h2>Bucket</h2>
-    </header>
+            <!-- Navbar End -->
+            <header>
+                <h2>Bucket</h2>
+            </header>
 
-    <img class="head_img" src ="assets/image/bucket.svg">
+            <img class="head_img" src ="assets/image/bucket.svg">
 
-    <?php
+            <?php
     // GET 으로 선택한 프로젝트가 없을 경우 -> 프로젝트 목록 표시
-    if (!$isProjectSelected) {
-        echo "<script type='text/javascript'>activeNav(0);</script>";
-        require_once $_SERVER["DOCUMENT_ROOT"] . "/projects.php";
-    }
+            if (!$isProjectSelected) {
+                echo "<script type='text/javascript'>activeNav(0);</script>";
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/projects.php";
+            }
     // 프로젝트가 선택된 경우 -> 대쉬보드 표시
-    else
-        require_once $_SERVER["DOCUMENT_ROOT"] . "/projectmain.php";
-    ?>
+            else
+                require_once $_SERVER["DOCUMENT_ROOT"] . "/projectmain.php";
+            ?>
 
 
-</body>
-</html>
+        </body>
+        </html>
