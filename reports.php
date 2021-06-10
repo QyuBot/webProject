@@ -6,11 +6,27 @@ if(!defined('DirectAccessCheck')){
 }
 ?>
 
+<style>
+button {
+    font-size: 16px;
+    width: 80px;
+    text-align: center;
+    height: 46px;
+    border-radius:10px;
+    border-color: #917b56;
+    color: #fff;
+    margin-left: 25px;
+}
+</style>
+
 <!-- Report, Comment -->
 <main>
     <section>
-        <h3>Report</h3>
+        <h3>Report<span class="btnList">
+            <button style="float:right" id="new" onclick="goReportEditor();">글 작성</button>
+        </span></h3>
         <hr>
+        
         <?php
 
         require_once $_SERVER["DOCUMENT_ROOT"] . "/db/report/reportService.php";
@@ -20,15 +36,13 @@ if(!defined('DirectAccessCheck')){
         else {
             foreach ($reports as $report) {
                 echo "<div class='issue'>";
-                echo "이슈 제목 : {$report['report_title']}<br>";
-                echo "<a href='/?projectId={$_GET['projectId']}&page=reportViewer&reportId={$report['report_id']}'>리포트 조회하기</a><br>";
-                echo "</div>";
+                echo "이슈 제목 : {$report['report_title']}";
+                echo "<button onclick=location.href='/?projectId={$_GET['projectId']}&page=reportViewer&reportId={$report['report_id']}'>조회</button><br>";
+                echo "</div><br>";
             }
         }
         ?>
-        <div class="btnList">
-            <button id="new" onclick="goReportEditor();">글 작성</button>
-        </div>
+        
     </section>
 </main>
 

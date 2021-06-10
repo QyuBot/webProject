@@ -4,6 +4,20 @@ if(!defined('DirectAccessCheck')){
     exit;
 }
 ?>
+
+<style>
+button {
+    font-size: 16px;
+    width: 80px;
+    text-align: center;
+    height: 46px;
+    border-radius:10px;
+    border-color: #917b56;
+    color: #fff;
+    margin-left: 25px;
+}
+</style>
+
 <main>
     <h3>FreeBoard</h3>
     <hr>

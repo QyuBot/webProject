@@ -2,14 +2,23 @@
 
 <style>
 
-    .article{
-        margin: 2%;
-        border: 1px solid black;
-    }
+.article{
+    margin: 2%;
+    border: 1px solid black;
+}
 
-
+button {
+    font-size: 16px;
+    width: 80px;
+    text-align: center;
+    height: 46px;
+    border-radius:10px;
+    border-color: #917b56;
+    color: #fff;
+}
 </style>
 
+<main>
 <br>
 <h3>리포트 조회</h3>
 <hr>
@@ -66,14 +75,17 @@ if (!empty($creator))
 <h3>리포트 제목 : <?=$report['report_title']?></h3>
 <br>
 <p>리포트 작성자 닉네임 : <?=$creatorNickname?></p>
-<?php echo "<a href='/?projectId={$_GET['projectId']}&page=reportEditor&reportId={$report['report_id']}'>리포트 수정하기</a><br>"; ?>
-<a href="" onclick="deleteReport();">리포트 삭제하기</a>
+
 <h3>리포트 본문</h3>
 <hr>
 <div class="article">
     <?php echo $report['report_article']?>
 </div>
-<hr>
+
+<?php echo "<button style='float:right' onclick=location.href='/?projectId={$_GET['projectId']}&page=reportEditor&reportId={$report['report_id']}'>수정</a>"; ?>
+<button type="button" style = "margin-right: 20px; float:right" onclick="deleteReport();">삭제</button>
+
+
 <br>
 <br>
 
@@ -110,3 +122,4 @@ if (!empty($creator))
     }
 
 </script>
+</main>
