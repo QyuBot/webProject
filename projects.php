@@ -34,11 +34,13 @@ $projectList = getJoinorNotProjectList($_SESSION['sess']);
                 echo "<p>아직 참가한 프로젝트가 없어요</p>";
             else {
                 foreach($projectList['join'] as $row) {
-                    $projectName = getProjectNameByProjectId($row);
+                    $project = getProjectByProjectId($row);
                     $projectNumofCollaborators = count(getAllProjectCollaborators($row));
                     echo "<div class='project'>";
+                    if ($nowLoginUser['user_id'] == $project['project_admin_id'])
+                        echo "내가 관리자인 프로젝트";
                     echo "프로젝트 ID : {$row}<br>";
-                    echo "프로젝트 이름 : {$projectName}<br>";
+                    echo "프로젝트 이름 : {$project['project_name']}<br>";
                     echo "참가자 수 : {$projectNumofCollaborators}<br>";
                     echo "<a href='/?projectId={$row}'>프로젝트 대쉬보드로 이동하기</a>";
                     echo "</div>";

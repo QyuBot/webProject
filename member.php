@@ -28,14 +28,10 @@ if(!defined('DirectAccessCheck')){
 </style>
 <main>
     <h3>멤버</h3>
-    <a href="" onclick="quitProject();">프로젝트 나가기</a>
     <br>
     <?php
-    if (session_status() == PHP_SESSION_NONE)
-        session_start();
-    // 현재 접속한 유저가 프로젝트 관리자 일 경우
-    if ($project['project_admin_id'] == $_SESSION['sess'])
-        echo "<a href='' onclick='deleteProject();'>프로젝트 삭제하기</a>";
+    // 프로젝트 나가기 버튼
+    echo "<a href='' onclick='quitProject({$nowLoginUser['user_id']});'>프로젝트 나가기</a><br>";
 
     ?>
     <br>
@@ -49,20 +45,36 @@ if(!defined('DirectAccessCheck')){
                     <td>사용자 닉네임</td>
                     <td>작성한 이슈 수</td>
                     <td>작성한 댓글 수</td>
+                    <td></td>
                 </tr>
                 <?php
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/db/user/userService.php";
                 require_once $_SERVER["DOCUMENT_ROOT"] . "/db/project/projectService.php";
 
                 $collaborators = getAllProjectCollaborators($project['project_id']);
+
                 foreach ($collaborators as $collaborator) {
                     $user = getUserByUserId($collaborator['user_id']);
                     $issues = getAllWritedIssuesInProject($project['project_id'], $user['user_id']);
                     $comments = getAllWritedCommentsInProject($project['project_id'], $user['user_id']);
+
                     echo "<tr>";
-                    echo "<td>{$user['user_nickname']}</td>";
+                    echo "<td>{$user['user_nickname']}";
+                    // 지금 행이 프로젝트의 관리자인 경우
+                    if ($user['user_id'] == $project['project_admin_id'])
+                        echo "[관리자] ";
+                    // 지금 행이 내 정보인 경우
+                    if ($user['user_id'] == $nowLoginUser['user_id'])
+                        echo "(나) ";
+                    echo "</td>";
                     echo "<td>".count($issues)." 개</td>";
                     echo "<td>".count($comments)." 개</td>";
+
+                    // 현재 접속한 유저가 프로젝트 관리자 이면서, 지금 행이 내가 아닐 경우 -> 추방하기 버튼 출력
+                    if ($project['project_admin_id'] == $_SESSION['sess'] && $nowLoginUser['user_id'] != $user['user_id'])
+                        echo "<td><a href='' onclick='kickUser(".$user['user_id'].", ".$user['user_nickname'].");'>추방하기</a></td>";
+                    else
+                        echo "<td></td>";
                     echo "</tr>";
                 }
                 ?>
@@ -73,7 +85,7 @@ if(!defined('DirectAccessCheck')){
 </main>
 
 <script>
-    function quitProject() {
+    function quitProject(userId) {
 
         const projectId = document.getElementById('projectId').value;
         const projectName = document.getElementById('projectName').value;
@@ -85,11 +97,12 @@ if(!defined('DirectAccessCheck')){
                     url: "/db/project/quitMember.php",
                     data: {
                         projectId: projectId,
+                        userId: userId,
                     },
                     success: (code) => {
                         console.log(code)
                         switch(code) {
-                            case "no_args":
+                            case "missing_arg(s)":
                                 alert("매개변수 오류");
                                 break;
                             case "access_denied":
@@ -153,6 +166,44 @@ if(!defined('DirectAccessCheck')){
         else {
             alert('프로젝트를 삭제하지 않았습니다.');
         }
+    }
+
+    function kickUser(userId, name) {
+
+        const projectId = document.getElementById('projectId').value;
+
+        if (confirm('정말 \"' + name + '\" 유저를 추방합니까? 작성한 이슈와 댓글은 유지됩니다.')) {
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "/db/project/quitMember.php",
+                    data: {
+                        projectId: projectId,
+                        userId: userId,
+                    },
+                    success: (code) => {
+                        console.log(code)
+                        switch(code) {
+                            case "no_args":
+                                alert("매개변수 오류");
+                                break;
+                            case "access_denied":
+                                alert("접근이 거부되었습니다");
+                                break;
+                            case "is_admin":
+                                alert("관리자는 프로젝트에서 나갈 수 없습니다. 다른 유저를 관리자로 지정한 후 시도해주세요.");
+                                break;
+                            case "success":
+                                alert("유저를 프로젝트에서 추방시켰습니다.");
+                                break;
+                            default:
+                                alert("예외 발생");
+                        }
+                    }
+                }
+            )
+        }
+
     }
 
 

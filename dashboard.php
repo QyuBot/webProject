@@ -26,7 +26,12 @@ if(!defined('DirectAccessCheck')){
     }
 </style>
 <?php
+if (session_status() == PHP_SESSION_NONE)
+    session_start();
 
+// 현재 접속한 유저가 프로젝트 관리자 일 경우 -> 삭제하기 버튼 출력
+if ($project['project_admin_id'] == $_SESSION['sess'])
+    echo "<a href='' onclick='deleteProject();'>프로젝트 삭제하기</a>";
 
 ?>
 <main>
